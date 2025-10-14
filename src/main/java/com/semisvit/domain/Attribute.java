@@ -2,6 +2,7 @@ package com.semisvit.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NaturalId
+    @Column(unique = true)
     private String attributeName;
     @Enumerated(EnumType.STRING)
     private AttributeType attributeType;  // STRING, NUMBER, BOOLEAN, SELECT
@@ -23,7 +26,8 @@ public class Attribute {
      * (на кшталт Color: Red | Green | Blue).
      */
     @ElementCollection
-    @CollectionTable(name = "attribute_options", joinColumns = @JoinColumn(name = "attribute_id"))
+    @CollectionTable(name = "attribute_options",
+            joinColumns = @JoinColumn(name = "attribute_id"))
     @Column(name = "option_value")
     private List<String> options = new ArrayList<>();
     @ManyToOne

@@ -20,6 +20,7 @@ public class ProductProperty {
      * незалежно від типу (STRING, NUMBER, BOOLEAN, SELECT).
      */
     private String value;
+    private String attributeUnit;
 }
 
 /** Категорія: Цвяхи
