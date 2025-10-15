@@ -1,3 +1,6 @@
+semisvit:
+  store:
+    version: 0.0.1
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/semisvit

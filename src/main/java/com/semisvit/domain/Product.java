@@ -23,6 +23,7 @@ public class Product {
     private Category category;
     @OneToMany(mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true
+            )
     private List<ProductProperty> productPropertiesList = new ArrayList<>();
 }

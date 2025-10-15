@@ -5,8 +5,7 @@ import com.semisvit.domain.Category;
 import com.semisvit.domain.Product;
 import com.semisvit.domain.ProductProperty;
 import com.semisvit.dto.AttribDto;
-import com.semisvit.dto.ProductReqDto;
-import com.semisvit.dto.ProductRespDto;
+import com.semisvit.dto.ProductDto;
 import com.semisvit.exception.DtoObligatoryFieldsAreMissingException;
 import com.semisvit.exception.ProductAlreadyExistsException;
 import com.semisvit.mapper.ProductMapper;
@@ -35,6 +34,31 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    public List<ProductDto> getAllProductDtos() {
+        return productRepository
+                .findAll()
+                .stream()
+                .map(product -> new ProductDto(
+                        product.getCategory().getCategoryName(),
+                        product.getProductName(),
+                        product.getProductCode(),
+                        product.getProductPropertiesList().stream()
+                                .filter(pp -> pp.getAttribute() != null)
+                                .map(pp -> {
+                                    Attribute attribute = pp.getAttribute();
+                                    return new AttribDto(
+                                            attribute.getAttributeName(),
+                                            pp.getValue(),
+                                            attribute.getAttributeType(),
+                                            pp.getAttributeUnit() // 🔁 те саме з unit
+                                    );
+                                })
+                                .toList()
+                ))
+                .toList();
+    }
+
+
     /**
      * Створює новий продукт з атрибутами.
      * <p>
@@ -43,11 +67,11 @@ public class ProductService {
      *
      * @param dto DTO з інформацією про продукт і атрибути
      * @return DTO з інформацією про створений продукт
-     * @throws ProductAlreadyExistsException якщо продукт з таким іменем уже існує
+     * @throws ProductAlreadyExistsException          якщо продукт з таким іменем уже існує
      * @throws DtoObligatoryFieldsAreMissingException якщо обов’язкові поля DTO відсутні
      */
     @Transactional
-    public ProductRespDto createProductWithAttributes(ProductReqDto dto) {
+    public ProductDto createProductWithAttributes(ProductDto dto) {
         var productName = dto.productName();
         check(productName);
         if (productExistsByName(productName)) {
@@ -87,7 +111,7 @@ public class ProductService {
      * Шукає значення атрибута у DTO-списку по назві атрибута.
      *
      * @param dtoAttributesList список атрибутів з DTO
-     * @param attribute          атрибут, для якого шукається значення
+     * @param attribute         атрибут, для якого шукається значення
      * @return знайдений AttribDto
      * @throws DtoObligatoryFieldsAreMissingException якщо атрибут не знайдено
      */

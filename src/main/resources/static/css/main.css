@@ -1,0 +1,568 @@
+
+body {
+	/* background: url(../img/bg.jpg) no-repeat; */
+	-moz-background-size: 100%; /* Firefox 3.6+ */
+	-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	-o-background-size: 100%; /* Opera 9.6+ */
+	background-size: 100%; /* Modern browsers */	
+}
+
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;    
+    padding-top: 30px;
+    padding-bottom: 15px;
+    border-bottom: solid 1px gray;
+}
+
+header h1 {
+    display: block;
+    font-size: 2em; 
+}
+
+header h3 {
+    display: block;    
+}
+
+form {    
+    justify-content: space-between;
+    align-items: baseline;
+    z-index: 99;
+}
+
+#model_input, #name_input, #email_input , #passportData_input
+{
+    flex: 1;
+    margin: 0 10px;
+    padding-left: 8px;
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;	
+}
+
+#description_input
+{
+    flex: 1;
+    margin: 0 10px;
+    padding-left: 8px;
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	margin-top: 5px;
+}
+
+#price_input, #balance_input{
+	flex: 1;
+    margin: 0 10px;
+    padding-left: 8px;
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	margin-top: 5px;
+	width: 52px;
+}
+
+#seatsQuantity_input, #totalQty_input {
+	flex: 1;
+    margin: 0 10px;
+    padding-left: 8px;
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	margin-top: 5px;
+	width: 35px;
+}
+
+#carclass_input, #color_input, #propulsion_input 
+{
+    flex: 1;
+    margin: 0 10px;    
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	background-color:white;
+	margin-top: 5px;
+}
+
+#pickup_date, #drop-off_date, #aux_checkbox {
+	flex: 1;
+    margin: 0 10px;    
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	background-color:white;
+	margin-top: 5px;
+}
+
+#pickup_date_user_account, #drop-off_date_user_account, #aux_checkbox_user_account {
+	flex: 1;
+    margin: 0 10px;    
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	background-color:white;	
+}
+
+
+textarea {
+    flex: 2;
+    margin: 0 10px;
+    padding-left: 8px;
+    resize: none;
+    border-color: #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+}
+
+.input_submit {
+    border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: #67a300;
+    color: #fff;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+	margin-right: 10px;
+	margin-top: 10px;	
+}
+
+.select_button{		
+	flex: 1;
+    margin: 0 10px;    
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	background-color:white
+}
+
+.select_button_user_account {
+	flex: 1;
+    margin: 0 10px;    
+    border: 1px solid #67a300;
+    border-radius: 6px;
+    outline-color: #67a300;
+	background-color:white
+}
+
+.select_button:hover, 
+.select_button_user_account:hover,
+.button_user_account:hover,
+.button:hover, 
+.caution_button:hover, 
+.orange_button:hover, 
+.users_button_in_orderlist:hover,
+.caution_button_orderlist:hover,
+.delete_ico_orderlist:hover,
+.pay_ico_orderlist:hover,
+.edit_ico_orderlist:hover {
+	background-color: white;
+	color: #b90000;
+}
+
+.buttons_block {
+	flex:1;	
+	display: flex;    
+    background-color: white;
+    border-radius: 4px;
+    z-index: 98;	
+	margin: 10px;
+
+}
+
+.button {
+	border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: #67a300;
+    color: #fff;    
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+	text-align: center
+}
+
+.button_user_account {
+	border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: #67a300;
+    color: #fff;    
+    cursor: pointer;    
+	text-align: center;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+.caution_button {
+	border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: brown;
+    color: #fff;    
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+	text-align: center;
+}
+
+.caution_button_orderlist {
+	border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: brown;
+    color: #fff;    
+    cursor: pointer;
+    margin-right: 5px;    
+	text-align: center;
+	vertical-align: middle;
+	font: 
+}
+
+.orange_button {
+	border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: orange;
+    color: #fff;    
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+	text-align: center;
+	margin-left: 10px;
+}
+
+.car, .user, .overall_stats {    
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	display: inline-table;
+	text-align: center;
+	border-color: lightskyblue;
+	margin: 5px;
+}
+
+.user_blocked {
+	color: grey;
+	padding: 15px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	display: inline-table;
+	text-align: center;
+	border-color: lightskyblue;
+	margin: 5px;
+}
+
+.car_not_available {
+	color: grey;
+	padding: 15px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	display: inline-table;
+	text-align: center;
+	border-color: lightskyblue;
+	margin: 5px;
+}
+
+.top-up_panel {
+	/* padding: 8px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	display: inline-table;
+	text-align: center;
+	border-color: lightskyblue;
+	margin: 5px;
+	padding-bottom: 15px; */	
+}
+
+.stats_unit {
+	font-weight: bold;
+	padding: 10px;
+	padding-bottom: 0px;
+}
+
+.stats_img {
+	display: block;
+}
+
+.car_model, .user_name {
+    font-size: 1.3em;
+    font-weight: 500;
+}
+
+.cars_header, .users_header, .tx_header{		
+	font-size: 1.3em;    
+	margin: 10px;	
+	margin-top: 30px;
+} 
+
+.order_header {
+	font-size: 1.3em;    
+	margin: 10px;	
+	margin-top: 25px;
+}
+
+.order_header_user_account{
+	font-size: 1.3em;    	
+	margin-top: 15px;
+}
+
+.car_unit, .user_unit  {    
+}
+
+
+
+.car_entry_form_level, .order_entry_form_level {
+	width: 860px;
+}
+
+.order_entry_form_level_user_account {
+	display: inline-flex;
+}
+
+.car_edit_form_level{
+}
+
+.user_edit_form, .car_edit_form, .order_edit_form_level {
+}
+
+.car_entry_form_block, .order_entry_form_block {
+    flex: 2;
+    display: block;
+    background-color: white;
+    border-radius: 4px;
+    z-index: 98;	
+	margin: 15px;
+}
+
+.order_entry_form_block_user_account{	
+    background-color: white;
+    border-radius: 4px;    
+	border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	border-color: lightskyblue;
+	padding: 10px;
+	display: inline-table;
+    width: min-content;
+}
+
+.user_order_checkout_block {
+	padding: 10px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	display: inline-table;
+	text-align: center;
+	border-color: lightskyblue;
+	margin: 5px;
+}
+
+.checkout_unit {
+}
+
+.car_solecard_action_buttons_block, .user_solecard_action_buttons_block {
+	display: inline-flex;
+	margin-top: 10px;
+}
+
+.user_solecard_block-manager_buttons_block  {
+}
+
+.order_unit {
+	text-align: center;
+	padding: 5px;
+}
+
+.date_due {
+	text-align: center;
+	padding: 5px;
+	color: green;
+}
+
+.date_delayed {
+	text-align: center;
+	padding: 5px;
+	color: orange;
+}
+
+.order {
+}
+
+.order_expired {
+	color: grey;
+}
+
+.buttons_order_unit {
+	/* vertical-align: baseline; */
+	display: inline-table;
+}
+
+.order_table_legend {
+	font-weight: bold
+}
+
+.users_button_in_orderlist {
+	border-style: none;
+    outline-color: transparent;
+    border-radius: 6px;
+    background-color: white;
+    color: black;    
+    cursor: pointer;    
+	text-align: center;
+	text-decoration: underline;
+
+}
+
+.order_table  { 
+	box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	text-align: center;	
+	border-radius: 10px;	
+	border: 1px solid /* #f3f3f3 */;
+	border-color: lightskyblue;
+	/* vertical-align: baseline; */
+	font-style: inherit
+}
+
+.stats_block {	
+	text-align: center;			
+	font-style: inherit;
+	/* padding: 10px; */
+	/* margin-top: 20px; */
+	display: flex;
+    align-items: flex-end;
+}
+
+.delete_ico_orderlist, 
+.edit_ico_orderlist, 
+.block_ico_userlist, 
+.unblock_ico_userlist, 
+.manager_ico_userlist,
+.pay_ico_orderlist {
+	background-color: white;
+	border-style: none;
+    /* outline-color: transparent; */
+	cursor: pointer;  
+	vertical-align: baseline;	
+	padding: 2px;	
+}
+
+.edit_ico_orderlist_in_orders{
+	background-color: white;
+	border-style: none;    
+	cursor: pointer;  
+	vertical-align: baseline;		
+}
+
+.color_input{	
+}
+
+.manager_img_userlist{
+}
+
+.version_block{
+	font-size: 15px;
+    margin-top: auto;
+}
+
+.errorDatesAssign {
+	color: red;
+	margin: 10px;
+	display: inline;
+}
+
+.errorLowBalance {
+	margin-top: 12px;
+	color: red;
+}
+
+.errorDatesAssignUserAccount, 
+.errorBlockedUser,
+.errorCarNotAvailable {
+	color: red;
+	margin: 10px;
+	margin-top: 10px;
+}
+
+.errorDatesAssignEdit {
+	color: red;
+	margin: 10px;	
+}
+
+.carDeleteErrorBlock {
+	color: red;
+	margin-top: 10px;
+}
+
+.user_solecard_values {
+	font-weight: bold;
+}
+
+.payment_radio_block {
+}
+
+.aux_checkbox_user_account_block {
+	margin-top: 8px;
+}
+
+.car_model_checkout {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.payment_unit {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.checkout_unit{
+}
+
+.checkout_total {
+	border-top: solid 1px gray;
+}
+
+.payment_block{
+	margin-left: 20px;
+    margin-top: 8px;
+} 
+
+.order_entry_form_section_USER_ACCOUNT {
+	display: inline-block;
+}
+.user_data_block_USER_ACCOUNT, .transactions_window{	
+	display: inline-table;
+}
+
+.tx {
+	padding: 15px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);		
+	border-color: lightskyblue;
+	margin: 5px;
+	display: inline-table;
+}
+
+.tx_unit {	
+}
+
+.user_hints_block {
+	width: 869px;
+    text-align: justify;
+	font-weight: normal;
+}
+
+.pullDownMenu_items {
+	font: inherit;	
+}

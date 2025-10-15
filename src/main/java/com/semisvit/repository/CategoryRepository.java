@@ -1,6 +1,5 @@
 package com.semisvit.repository;
 
-import com.semisvit.domain.Attribute;
 import com.semisvit.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 

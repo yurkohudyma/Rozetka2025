@@ -1,4 +1,4 @@
-package com.semisvit.controller;
+package com.semisvit.restcontroller;
 
 public class CategoryController {
 }

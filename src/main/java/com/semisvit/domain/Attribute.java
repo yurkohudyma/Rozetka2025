@@ -25,11 +25,11 @@ public class Attribute {
      * повинен обрати одне значення з набору варіантів
      * (на кшталт Color: Red | Green | Blue).
      */
-    @ElementCollection
+    /*@ElementCollection
     @CollectionTable(name = "attribute_options",
             joinColumns = @JoinColumn(name = "attribute_id"))
     @Column(name = "option_value")
-    private List<String> options = new ArrayList<>();
+    private List<String> options = new ArrayList<>();*/
     @ManyToOne
     private Category category;
 }
