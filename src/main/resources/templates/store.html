@@ -11,7 +11,7 @@
           rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <title>Семісвіт ::: Товари</title>
+    <title>Розетка2025 ::: Товари</title>
 </head>
 <body>
 
@@ -91,11 +91,20 @@
 -->
 
     <!--PRODUCTS READOUT SECTION-->
+    <div class="cars_header"></div>
+    <table>
+        <tr th:each="cat : ${catList}">
+            <td>
+                <a th:href="@{/cat(catName=${cat})}" th:text="${cat}"></a>
+            </td>
+        </tr>
+    </table>
+
     <div class="cars_header">Товари</div>
     <div class="car" th:each="product : ${productList}">
         <!--th:class="${car.available == 0} ? car_not_available : car" >-->
         <!--<div class="car_unit" th:text="'№ '+${product.id}"></div>-->
-        <div class="car_model" th:text="${product.categoryName}"></div>
+        <!--<div class="car_model" th:text="${product.categoryName}"></div>-->
         <div class="car_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
         <div class="car_unit" th:text="${product.productName}"></div> <!--ENUM "${product.carClass.str}"-->
         <div class="car_unit"> <!--th:text="'€ '+${product.price}">--></div>

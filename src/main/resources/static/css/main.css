@@ -175,11 +175,21 @@ textarea {
 
 }
 
+.catTable {
+	box-shadow: 0 5px 10px rgb(0 0 0 / 20%);    
+    border-radius: 10px;    
+    font-style: inherit;
+    width: fit-content;
+    margin-top: 5px;
+    display: contents;
+	
+}
+
 .button {
 	border-style: none;
     outline-color: transparent;
     border-radius: 6px;
-    background-color: #67a300;
+    background-color: #FF8300;
     color: #fff;    
     cursor: pointer;
     margin-right: 10px;

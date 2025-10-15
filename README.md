@@ -1,2 +1,2 @@
-# Semisvit
-Semisvit E-store
+# Rozetka
+Rozetka E-store
