@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -35,10 +36,13 @@ public class HomeController {
     @GetMapping("/cat")
     public String getCat (Model model, @RequestParam String catName) {
         var catListProducts = productService.getAllCategoryProducts (catName);
+        var attribMap = productService
+                .getAttribNamesAndValuesListMapPerCatImperative(catName);
         model.addAllAttributes(Map.of(
                 "productList", catListProducts,
                 "showAddProductForm", true,
-                "catList", productService.getAllCats()));
+                "catList", productService.getAllCats(),
+                "attribMap", attribMap));
         return "store";
     }
 }

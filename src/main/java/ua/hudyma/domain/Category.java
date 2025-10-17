@@ -20,6 +20,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> productList = new ArrayList<>();
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Attribute> attributes = new ArrayList<>();
+    private List<Attribute> attributesList = new ArrayList<>();
 }
 

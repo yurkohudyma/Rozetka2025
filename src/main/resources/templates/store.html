@@ -16,180 +16,193 @@
 <body>
 
 <div class="wrapper">
-    <header>
-        <h1 class="title">Панель адміна</h1>
-
-        <!-- STATS BLOCK
-        <div class="stats_block" >
-            <div class="stats_unit"><img class="stats_img" th:src="@{/img/order-icon.png}" th:title="Замовлень"/></div>
-            <div class="stats_unit" th:text="${ordersQuantity}"></div>
-            <div class="stats_unit"><img class="stats_img" th:src="@{/img/car-icon.png}" th:title="Авто"/></div>
-            <div class="stats_unit" th:text="${carsQuantity}"></div>
-            <div class="stats_unit"><img class="stats_img" th:src="@{/img/user-icon.png}" th:title="Користувачів"/>
-            </div>
-            <div class="stats_unit" th:text="${usersQuantity}"></div>
-            <div class="stats_unit"><img class="stats_img" th:src="@{/img/green_euro_icon.png}" title="Сума замовлень"/>
-            </div>
-            <div class="stats_unit" th:text="'€'+${ordersAmount}"></div>
+    <div class="filter_pane">
+        <div th:each="entry : ${attribMap}">
+            <strong>[[${entry.key}]]</strong>
+            <ul>
+                <li th:each="val : ${entry.value}">
+                    [[${val}]]
+                </li>
+            </ul>
         </div>
--->
-        <!--version tab-->
-        <h4 class="version_block" th:text="'v.' + ${@environment.getProperty('semisvit.store.version')}"></h4>
-    </header>
 
-    <!--MAIN MENU -->
-    <div class="buttons_block">
-        <form action="/" method="get">
-            <input type="submit" value="Головна" class="button">
-        </form>
-        <form action="#" th:action="@{/users}" th:method="get">
-            <input type="submit" value="Користувачі" class="button">
-        </form>
-        <form action="#" th:action="@{/orders}" th:method="get">
-            <input type="submit" value="Замовлення" class="button">
-        </form>
-        <!-- <form action="#" th:if="${soleCarCard}" th:action="@{/cars}" th:method="get">
-             <input type="submit" value="Авто" class="button">
-         </form>-->
     </div>
+    <div class="content_area">
+        <header>
+            <h1 class="title">Панель адміна</h1>
 
-    <!--<div class="car_entry_form_block" th:if="${showAddCarForm}">-->
+            <!-- STATS BLOCK
+            <div class="stats_block" >
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/order-icon.png}" th:title="Замовлень"/></div>
+                <div class="stats_unit" th:text="${ordersQuantity}"></div>
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/product-icon.png}" th:title="Авто"/></div>
+                <div class="stats_unit" th:text="${productsQuantity}"></div>
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/user-icon.png}" th:title="Користувачів"/>
+                </div>
+                <div class="stats_unit" th:text="${usersQuantity}"></div>
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/green_euro_icon.png}" title="Сума замовлень"/>
+                </div>
+                <div class="stats_unit" th:text="'€'+${ordersAmount}"></div>
+            </div>
+    -->
+            <!--version tab-->
+            <h4 class="version_block" th:text="'v.' + ${@environment.getProperty('semisvit.store.version')}"></h4>
+        </header>
 
-    <!--CAR ENTRY FORM SECTION
-    <form action="#" th:action="@{/cars}" th:method="post">
-        <div class="car_entry_form_level">
-            <label for="model_input">Марка</label>
-            <input id="model_input" name="model" type="text" placeholder="Suzuki Across" required>
-            <label for="description_input" id="description">Опис</label>
-            <input id="description_input" name="description" placeholder="Зручна і якісна" required>
-            <label for="price_input">€</label>
-            <input id="price_input" name="price" type="text" placeholder="10.00" title="[xx.yy]" required
-                   pattern="\d+[.]?\d*">
-        </div>
-
-        <div class="car_entry_form_level">
-            <label for="carclass_input">Клас</label>
-            <select class="select_button" id="carclass_input" name="carClass">
-                <option th:each="car_class : ${carClassArr}" th:value="${car_class}"
-                        th:text="${car_class.str}"></option>
-            </select>
-            <label for="seatsQuantity_input" id="seatsQuantity">Місць</label>
-            <input id="seatsQuantity_input" name="seatsQuantity" type="text" placeholder="5"
-                   required pattern="\d+">
-            <label for="propulsion_input">Рушій</label>
-            <select class="select_button" id="propulsion_input" name="propulsion">
-                <option class="pullDownMenu_items" th:each="propulsion : ${carPropulsionArr}" th:value="${propulsion}"
-                        th:text="${propulsion.str}"></option>
-            </select>
-            <label for="totalQty_input">∑<span><sub>заг</sub></span></label>
-            <input id="totalQty_input" name="totalQty" type="text" placeholder="0"
-                   required pattern="\d+">
-            <input type="submit" value="Додати" class="button">
-        </div>
-    </form>
-</div>
--->
-
-    <!--PRODUCTS READOUT SECTION-->
-    <div class="cars_header"></div>
-    <table>
-        <tr th:each="cat : ${catList}">
-            <td>
-                <a th:href="@{/cat(catName=${cat})}" th:text="${cat}"></a>
-            </td>
-        </tr>
-    </table>
-
-    <div class="cars_header">Товари</div>
-    <div class="car" th:each="product : ${productList}">
-        <!--th:class="${car.available == 0} ? car_not_available : car" >-->
-        <!--<div class="car_unit" th:text="'№ '+${product.id}"></div>-->
-        <!--<div class="car_model" th:text="${product.categoryName}"></div>-->
-        <div class="car_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
-        <div class="car_unit" th:text="${product.productName}"></div> <!--ENUM "${product.carClass.str}"-->
-        <div class="car_unit"> <!--th:text="'€ '+${product.price}">--></div>
-        <div class="car_unit" th:each="attribute : ${product.attributeList}">
-            <td th:text="${attribute.attrName} + ': ' + ${attribute.attribValue} + ' ' + ${attribute.attribUnit}"></td>
-            </tr>
-        </div>
-        <!--<div class="car_unit" th:text="'Місць: '+${product.seatsQuantity}"></div>
-        <div class="car_unit" th:text="${product.propulsion.str}"></div>-->
-        <!--<div class="car_unit">∑<span><sub>пот</sub></span>
-            <span th:text="': ' + ${car.available}"></span>
-        </div>
-        <div class="car_unit">∑<span><sub>заг</sub></span>
-            <span th:text="': ' + ${car.totalQty}"></span>
-        </div>-->
-
-        <!--CAR MODIFY ACTIONS BUTTONS-->
-        <div class="car_solecard_action_buttons_block">
-            <form action="#" th:action="@{'/products/'+${product.productCode}}" th:method="delete">
-                <button type="submit" class="delete_ico_orderlist">
-                    <img th:src="@{/img/delete-button.png}" th:title="Видалити"/>
-                </button>
+        <!--MAIN MENU -->
+        <div class="buttons_block">
+            <form action="/" method="get">
+                <input type="submit" value="Головна" class="button">
             </form>
-            <a href="edit.html" th:href="@{'/edit/'+${product.productCode}}">
-                <img class="edit_ico_orderlist" th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
-            </a>
+            <form action="#" th:action="@{/users}" th:method="get">
+                <input type="submit" value="Користувачі" class="button">
+            </form>
+            <form action="#" th:action="@{/orders}" th:method="get">
+                <input type="submit" value="Замовлення" class="button">
+            </form>
+            <!-- <form action="#" th:if="${soleProductProductd}" th:action="@{/products}" th:method="get">
+                 <input type="submit" value="Авто" class="button">
+             </form>-->
         </div>
-    </div>
 
+        <!--<div class="product_entry_form_block" th:if="${showAddProductForm}">-->
 
-    <!--CONTEXT ACTIONS BUTTONS-->
-    <div class="buttons_block" th:if="${!productList.isEmpty()} and ${showAddProductForm}">
-        <form action="#" th:action="@{/products}" th:method="delete">
-            <input type="submit" value="Видалити все" class="caution_button">
+        <!--product ENTRY FORM SECTION
+        <form action="#" th:action="@{/products}" th:method="post">
+            <div class="product_entry_form_level">
+                <label for="model_input">Марка</label>
+                <input id="model_input" name="model" type="text" placeholder="Suzuki Across" required>
+                <label for="description_input" id="description">Опис</label>
+                <input id="description_input" name="description" placeholder="Зручна і якісна" required>
+                <label for="price_input">€</label>
+                <input id="price_input" name="price" type="text" placeholder="10.00" title="[xx.yy]" required
+                       pattern="\d+[.]?\d*">
+            </div>
+
+            <div class="product_entry_form_level">
+                <label for="productclass_input">Клас</label>
+                <select class="select_button" id="productclass_input" name="productClass">
+                    <option th:each="product_class : ${productClassArr}" th:value="${product_class}"
+                            th:text="${product_class.str}"></option>
+                </select>
+                <label for="seatsQuantity_input" id="seatsQuantity">Місць</label>
+                <input id="seatsQuantity_input" name="seatsQuantity" type="text" placeholder="5"
+                       required pattern="\d+">
+                <label for="propulsion_input">Рушій</label>
+                <select class="select_button" id="propulsion_input" name="propulsion">
+                    <option class="pullDownMenu_items" th:each="propulsion : ${productPropulsionArr}" th:value="${propulsion}"
+                            th:text="${propulsion.str}"></option>
+                </select>
+                <label for="totalQty_input">∑<span><sub>заг</sub></span></label>
+                <input id="totalQty_input" name="totalQty" type="text" placeholder="0"
+                       required pattern="\d+">
+                <input type="submit" value="Додати" class="button">
+            </div>
         </form>
     </div>
+    -->
 
-    <!--CARS ORDERS READOUT SECTION
-    <div class="order_header" th:unless="${carOrdersList.isEmpty() and !soleCarCard}">Замовлення</div>
-    <table class="order_table" th:if="${!carOrdersList.isEmpty() and soleCarCard}">
-        <thead>
-        <tr class="order_table_legend" >
-            <th>№</th>
-            <th>Користувач</th>
-            <th>Початок</th>
-            <th>Кінець</th>
-            <th>Тривалість</th>
-            <th>Сума</th>
-            <th>Сума GPS</th>
-            <th>Статус</th>
-            <th colspan="2">Дія</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="order" th:each="order : ${carOrdersList}">
-            <td class="order_unit" th:text="${order.id}"></td>
-            <td class="order_unit">
-                <a href="users.html" th:href="@{'/users/'+${order.user.id}}" th:text="${order.user.name}"></a>
-            </td>
-            <td class="order_unit" th:text="${order.dateBegin}"></td>
-            <td class="order_unit" th:text="${order.dateEnd}"></td>
-            <td class="order_unit" th:text="${order.duration}+' діб'"></td>
-            <td class="order_unit" th:text="'€'+${order.amount}"></td>
-            <td class="order_unit" th:text="'€'+${order.auxPayment}"></td>
-            <td class="order_unit" th:text="${order.status.str}"></td>
-            <td class="buttons_order_unit">
-                <form action="#" th:action="@{'/orders/'+${order.id}}" th:method="delete">
+        <!--PRODUCTS READOUT SECTION-->
+        <div class="products_header"></div>
+        <table>
+            <tr th:each="cat : ${catList}">
+                <td>
+                    <a th:href="@{/cat(catName=${cat})}" th:text="${cat}"></a>
+                </td>
+            </tr>
+        </table>
+
+        <div class="products_header">Товари</div>
+        <div class="product" th:each="product : ${productList}">
+            <!--th:class="${product.available == 0} ? product_not_available : product" >-->
+            <!--<div class="product_unit" th:text="'№ '+${product.id}"></div>-->
+            <!--<div class="product_model" th:text="${product.categoryName}"></div>-->
+            <div class="product_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
+            <div class="product_unit" th:text="${product.productName}"></div> <!--ENUM "${product.productClass.str}"-->
+            <div class="product_unit"> <!--th:text="'€ '+${product.price}">--></div>
+            </br>
+            <div class="product_unit" th:each="attribute : ${product.attributeList}">
+                <td th:text="${attribute.attrName} + ': ' + ${attribute.attribValue} + ' ' + ${attribute.attribUnit}"></td>
+                </tr>
+            </div>
+            <!--<div class="product_unit" th:text="'Місць: '+${product.seatsQuantity}"></div>
+            <div class="product_unit" th:text="${product.propulsion.str}"></div>-->
+            <!--<div class="product_unit">∑<span><sub>пот</sub></span>
+                <span th:text="': ' + ${product.available}"></span>
+            </div>
+            <div class="product_unit">∑<span><sub>заг</sub></span>
+                <span th:text="': ' + ${product.totalQty}"></span>
+            </div>-->
+
+            <!--PRODUCT MODIFY ACTIONS BUTTONS-->
+            <div class="product_solecard_action_buttons_block">
+                <form action="#" th:action="@{'/products/'+${product.productCode}}" th:method="delete">
                     <button type="submit" class="delete_ico_orderlist">
                         <img th:src="@{/img/delete-button.png}" th:title="Видалити"/>
                     </button>
                 </form>
-            </td>
-            <td class="buttons_order_unit">
-                <a href="edit.html" th:href="@{'/edit/'+${order.id}+'/order'}">
-                    <img th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
+                <a href="edit.html" th:href="@{'/edit/'+${product.productCode}}">
+                    <img class="edit_ico_orderlist" th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
                 </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div class = "carDeleteErrorBlock" th:if="${showErrorCarUsedInOrder}">
-        <span>Неможливо видалити авто з чинного замовлення, видаліть або відредагуйте замовлення з цим авто</span>
-    </div>-->
+            </div>
+        </div>
 
 
+        <!--CONTEXT ACTIONS BUTTONS-->
+        <div class="buttons_block" th:if="${!productList.isEmpty()} and ${showAddProductForm}">
+            <form action="#" th:action="@{/products}" th:method="delete">
+                <input type="submit" value="Видалити все" class="caution_button">
+            </form>
+        </div>
+
+        <!--PRODUCTS ORDERS READOUT SECTION
+        <div class="order_header" th:unless="${productOrdersList.isEmpty() and !soleProductProductd}">Замовлення</div>
+        <table class="order_table" th:if="${!productOrdersList.isEmpty() and soleProductProductd}">
+            <thead>
+            <tr class="order_table_legend" >
+                <th>№</th>
+                <th>Користувач</th>
+                <th>Початок</th>
+                <th>Кінець</th>
+                <th>Тривалість</th>
+                <th>Сума</th>
+                <th>Сума GPS</th>
+                <th>Статус</th>
+                <th colspan="2">Дія</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="order" th:each="order : ${productOrdersList}">
+                <td class="order_unit" th:text="${order.id}"></td>
+                <td class="order_unit">
+                    <a href="users.html" th:href="@{'/users/'+${order.user.id}}" th:text="${order.user.name}"></a>
+                </td>
+                <td class="order_unit" th:text="${order.dateBegin}"></td>
+                <td class="order_unit" th:text="${order.dateEnd}"></td>
+                <td class="order_unit" th:text="${order.duration}+' діб'"></td>
+                <td class="order_unit" th:text="'€'+${order.amount}"></td>
+                <td class="order_unit" th:text="'€'+${order.auxPayment}"></td>
+                <td class="order_unit" th:text="${order.status.str}"></td>
+                <td class="buttons_order_unit">
+                    <form action="#" th:action="@{'/orders/'+${order.id}}" th:method="delete">
+                        <button type="submit" class="delete_ico_orderlist">
+                            <img th:src="@{/img/delete-button.png}" th:title="Видалити"/>
+                        </button>
+                    </form>
+                </td>
+                <td class="buttons_order_unit">
+                    <a href="edit.html" th:href="@{'/edit/'+${order.id}+'/order'}">
+                        <img th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class = "productDeleteErrorBlock" th:if="${showErrorProductUsedInOrder}">
+            <span>Неможливо видалити авто з чинного замовлення, видаліть або відредагуйте замовлення з цим авто</span>
+        </div>-->
+
+    </div>
 </div>
 
 </body>

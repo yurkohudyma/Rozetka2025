@@ -1,5 +1,6 @@
 package ua.hudyma.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import ua.hudyma.domain.Attribute;
 import ua.hudyma.domain.Category;
 import ua.hudyma.domain.Product;
@@ -8,6 +9,7 @@ import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.ProductDto;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
+import ua.hudyma.mapper.AttributeMapper;
 import ua.hudyma.mapper.ProductMapper;
 import ua.hudyma.repository.AttributeRepository;
 import ua.hudyma.repository.CategoryRepository;
@@ -18,8 +20,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Сервіс для управління товарами та їх атрибутами.
@@ -33,16 +34,83 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final AttributeMapper attributeMapper;
 
     @Transactional(readOnly = true)
-    public List<ProductDto> getAllCategoryProducts(String cat) {
+    public List<ProductDto> getAllCategoryProducts(String catName) {
         return productRepository
-                .findAllByCategory_CategoryName(cat)
+                .findAllByCategory_CategoryName(catName)
                 .stream()
                 .map(productMapper::toDto)
                 .toList();
     }
 
+    /*@Transactional(readOnly = true)
+    public Map<String, List<String>> getAttribNamesAndValuesListMapPerCat (String catName){
+        var allCatProducts = getAllCategoryProducts(catName);
+        if (allCatProducts.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return allCatProducts
+                .stream()
+                .collect(Collectors.toMap(
+                        Collectors.groupingBy(Collectors
+                                        .flatMapping(ProductDto::attributeList,
+                                Collectors.mapping(List::get),
+                                Collectors.mapping(AttribDto::attrName))),
+                        Collectors.flatMapping(ProductDto::attributeList),
+                        Collectors.mapping(List::get),
+                        Collectors.mapping(AttribDto::attribValue))
+                        );
+    }*/
+
+    @Transactional(readOnly = true)
+    public Map<String, Set<String>> getAttribNamesAndValuesListMapPerCatImperative(String catName) {
+        var allCatProducts = getAllCategoryProducts(catName);
+        if (allCatProducts.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<String, Set<String>> map = new HashMap<>();
+        for (ProductDto productDto : allCatProducts) {
+            for (AttribDto attribDto : productDto.attributeList()) {
+                String attrName = attribDto.attrName();
+                String attrValue = getAttribValue(productDto, attrName);
+                var attribUnitSuffix = "";
+                if (!attribDto.attribUnit().isEmpty()){
+                     attribUnitSuffix = " (" + attribDto.attribUnit() + ")";
+                }
+                map.computeIfAbsent(attrName + attribUnitSuffix,
+                        k -> new HashSet<>()).add(attrValue);
+            }
+        }
+        return map;
+    }
+
+
+    private String getAttribValue(ProductDto productDto, String attribName) {
+        for (AttribDto attribDto : productDto.attributeList()){
+            if (attribDto.attrName().equals(attribName)){
+                return attribDto.attribValue();
+            }
+        }
+        return "";
+    }
+
+
+    /**
+     * Знайти всі атрибути категорії БЕЗ unit та value
+     */
+    @Transactional(readOnly = true)
+    public List<AttribDto> getAllAttributesPerCategory (String catName){
+        return categoryRepository
+                .findByCategoryName(catName)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Cat " + catName + " HAS not ben found"))
+                .getAttributesList()
+                .stream()
+                .map(attributeMapper::toDto)
+                .toList();
+    }
 
     @Transactional(readOnly = true)
     public List<String> getAllCats (){

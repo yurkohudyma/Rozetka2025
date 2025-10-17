@@ -1,9 +1,11 @@
 package ua.hudyma.mapper;
 
+import org.springframework.stereotype.Component;
 import ua.hudyma.domain.Product;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.ProductDto;
-import org.springframework.stereotype.Component;
+
+import static java.util.Comparator.comparing;
 
 @Component
 public class ProductMapperImpl implements ProductMapper{
@@ -17,11 +19,12 @@ public class ProductMapperImpl implements ProductMapper{
                         pp.getValue(),
                                   pp.getAttribute().getAttributeType(),
                         pp.getAttributeUnit()))
+                .sorted(comparing(AttribDto::attrName))
                 .toList();
         return new ProductDto(
                 product.getProductName(),
-                product.getCategory().getCategoryName(),
-                             product.getProductCode(),
+                product.getProductName(),
+                product.getProductCode(),
                 attribList
         );
     }

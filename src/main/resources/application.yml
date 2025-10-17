@@ -3,13 +3,13 @@ semisvit:
     version: 0.0.1
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/semisvit
+    url: jdbc:mysql://localhost:3306/rozetka2025
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   application:
-    name: Semisvit
+    name: Rozetka2025
 
   jpa:
     hibernate:

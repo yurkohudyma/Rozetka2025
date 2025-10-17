@@ -1,15 +1,38 @@
 
-body {
+html, body {
 	/* background: url(../img/bg.jpg) no-repeat; */
-	-moz-background-size: 100%; /* Firefox 3.6+ */
-	-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
-	-o-background-size: 100%; /* Opera 9.6+ */
-	background-size: 100%; /* Modern browsers */	
+	/*-moz-background-size: 100%;  Firefox 3.6+ */
+	/*-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	/*-o-background-size: 100%; /* Opera 9.6+ */
+	/*background-size: 100%; /* Modern browsers */	
+	height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .wrapper {
     width: 80%;
     margin: 0 auto;
+    height: 100%; /* додано */
+    display: flex; /* додано для розміщення фільтра і контенту поруч */
+}
+
+.content_area {
+    flex: 1;          /* займай весь простір після .filter_pane */
+    overflow: auto;   /* якщо потрібно — можна додати scroll */
+}
+
+
+
+.filter_pane {
+    width: 250px;           /* фіксована ширина */
+    height: 100%;           /* займати всю висоту layout */
+    overflow-y: auto;       /* скрол при потребі */
+    padding: 10px;
+    box-sizing: border-box;
+    /* background-color: #f0f0f0; */
+    word-wrap: break-word;  /* перенос довгих слів */
+    margin-top: 80px;
 }
 
 header {
@@ -78,7 +101,7 @@ form {
 	width: 35px;
 }
 
-#carclass_input, #color_input, #propulsion_input 
+#productclass_input, #color_input, #propulsion_input 
 {
     flex: 1;
     margin: 0 10px;    
@@ -247,7 +270,7 @@ textarea {
 	margin-left: 10px;
 }
 
-.car, .user, .overall_stats {    
+.product, .user, .overall_stats {    
     padding: 15px;
     border: 1px solid;
     border-radius: 10px;
@@ -270,7 +293,7 @@ textarea {
 	margin: 5px;
 }
 
-.car_not_available {
+.product_not_available {
 	color: grey;
 	padding: 15px;
     border: 1px solid;
@@ -304,12 +327,12 @@ textarea {
 	display: block;
 }
 
-.car_model, .user_name {
+.product_model, .user_name {
     font-size: 1.3em;
     font-weight: 500;
 }
 
-.cars_header, .users_header, .tx_header{		
+.products_header, .users_header, .tx_header{		
 	font-size: 1.3em;    
 	margin: 10px;	
 	margin-top: 30px;
@@ -326,12 +349,12 @@ textarea {
 	margin-top: 15px;
 }
 
-.car_unit, .user_unit  {    
+.product_unit, .user_unit  {    
 }
 
 
 
-.car_entry_form_level, .order_entry_form_level {
+.product_entry_form_level, .order_entry_form_level {
 	width: 860px;
 }
 
@@ -339,13 +362,13 @@ textarea {
 	display: inline-flex;
 }
 
-.car_edit_form_level{
+.product_edit_form_level{
 }
 
-.user_edit_form, .car_edit_form, .order_edit_form_level {
+.user_edit_form, .product_edit_form, .order_edit_form_level {
 }
 
-.car_entry_form_block, .order_entry_form_block {
+.product_entry_form_block, .order_entry_form_block {
     flex: 2;
     display: block;
     background-color: white;
@@ -380,7 +403,7 @@ textarea {
 .checkout_unit {
 }
 
-.car_solecard_action_buttons_block, .user_solecard_action_buttons_block {
+.product_solecard_action_buttons_block, .user_solecard_action_buttons_block {
 	display: inline-flex;
 	margin-top: 10px;
 }
@@ -497,7 +520,7 @@ textarea {
 
 .errorDatesAssignUserAccount, 
 .errorBlockedUser,
-.errorCarNotAvailable {
+.errorproductNotAvailable {
 	color: red;
 	margin: 10px;
 	margin-top: 10px;
@@ -508,7 +531,7 @@ textarea {
 	margin: 10px;	
 }
 
-.carDeleteErrorBlock {
+.productDeleteErrorBlock {
 	color: red;
 	margin-top: 10px;
 }
@@ -524,7 +547,7 @@ textarea {
 	margin-top: 8px;
 }
 
-.car_model_checkout {
+.product_model_checkout {
 	margin-left: 5px;
 	margin-right: 5px;
 	font-weight: bold;
