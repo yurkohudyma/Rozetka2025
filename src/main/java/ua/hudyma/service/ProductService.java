@@ -1,10 +1,7 @@
 package ua.hudyma.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import ua.hudyma.domain.Attribute;
-import ua.hudyma.domain.Category;
-import ua.hudyma.domain.Product;
-import ua.hudyma.domain.ProductProperty;
+import ua.hudyma.domain.*;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.ProductDto;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
@@ -21,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Сервіс для управління товарами та їх атрибутами.
@@ -45,75 +43,52 @@ public class ProductService {
                 .toList();
     }
 
-    /*@Transactional(readOnly = true)
-    public Map<String, List<String>> getAttribNamesAndValuesListMapPerCat (String catName){
-        var allCatProducts = getAllCategoryProducts(catName);
-        if (allCatProducts.isEmpty()) {
-            return Collections.emptyMap();
-        }
-        return allCatProducts
-                .stream()
-                .collect(Collectors.toMap(
-                        Collectors.groupingBy(Collectors
-                                        .flatMapping(ProductDto::attributeList,
-                                Collectors.mapping(List::get),
-                                Collectors.mapping(AttribDto::attrName))),
-                        Collectors.flatMapping(ProductDto::attributeList),
-                        Collectors.mapping(List::get),
-                        Collectors.mapping(AttribDto::attribValue))
-                        );
-    }*/
-
     @Transactional(readOnly = true)
-    public Map<String, Set<String>> getAttribNamesAndValuesListMapPerCatImperative(String catName) {
+    public Map<String, Set<String>> getAttribMapWithDifferentialSorting(String catName) {
         var allCatProducts = getAllCategoryProducts(catName);
         if (allCatProducts.isEmpty()) {
             return Collections.emptyMap();
         }
-        Map<String, Set<String>> map = new HashMap<>();
-        for (ProductDto productDto : allCatProducts) {
+        var attrValuesMap = new HashMap<String, List<String>>();
+        var attrTypesMap = new HashMap<String, AttributeType>();
+        allCatProducts.forEach(productDto -> {
             for (AttribDto attribDto : productDto.attributeList()) {
-                String attrName = attribDto.attrName();
-                String attrValue = getAttribValue(productDto, attrName);
-                var attribUnitSuffix = "";
-                if (!attribDto.attribUnit().isEmpty()){
-                     attribUnitSuffix = " (" + attribDto.attribUnit() + ")";
-                }
-                map.computeIfAbsent(attrName + attribUnitSuffix,
-                        k -> new HashSet<>()).add(attrValue);
+                var attrName = attribDto.attrName();
+                var unitSuffix = attribDto.attribUnit().isEmpty() ? "" : " (" + attribDto.attribUnit() + ")";
+                var fullAttrName = attrName + unitSuffix;
+                var attrValue = attribDto.attribValue();
+                var attrType = attribDto.attributeType();
+                attrValuesMap.computeIfAbsent(fullAttrName, k -> new ArrayList<>()).add(attrValue);
+                attrTypesMap.putIfAbsent(fullAttrName, attrType);
             }
+        });
+        var resultMap = new HashMap<String, Set<String>>();
+        for (var entry : attrValuesMap.entrySet()) {
+            AttributeType type = attrTypesMap
+                    .getOrDefault(entry.getKey(), AttributeType.STRING);
+            Comparator<String> comparator = switch (type) {
+                case NUMBER -> Comparator.comparingDouble(
+                        val -> {
+                            try {
+                                return Double.parseDouble(val);
+                            } catch (NumberFormatException e) {
+                                return Double.MAX_VALUE;
+                            }
+                        });
+                case BOOLEAN -> Comparator.comparing(Boolean::parseBoolean);
+                default -> Comparator.naturalOrder();
+            };
+            var sortedSet = entry.getValue().stream()
+                    .filter(v -> !v.isBlank())
+                    .collect(Collectors.toCollection(
+                            () -> new TreeSet<>(comparator)));
+            resultMap.put(entry.getKey(), sortedSet);
         }
-        return map;
-    }
-
-
-    private String getAttribValue(ProductDto productDto, String attribName) {
-        for (AttribDto attribDto : productDto.attributeList()){
-            if (attribDto.attrName().equals(attribName)){
-                return attribDto.attribValue();
-            }
-        }
-        return "";
-    }
-
-
-    /**
-     * Знайти всі атрибути категорії БЕЗ unit та value
-     */
-    @Transactional(readOnly = true)
-    public List<AttribDto> getAllAttributesPerCategory (String catName){
-        return categoryRepository
-                .findByCategoryName(catName)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Cat " + catName + " HAS not ben found"))
-                .getAttributesList()
-                .stream()
-                .map(attributeMapper::toDto)
-                .toList();
+        return resultMap;
     }
 
     @Transactional(readOnly = true)
-    public List<String> getAllCats (){
+    public List<String> getAllCats() {
         return categoryRepository
                 .findAll()
                 .stream()
@@ -122,7 +97,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> getAllSimple (){
+    public List<ProductDto> getAllSimple() {
         return productRepository
                 .findAll()
                 .stream()

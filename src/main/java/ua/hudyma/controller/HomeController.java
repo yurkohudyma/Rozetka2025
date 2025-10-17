@@ -37,7 +37,7 @@ public class HomeController {
     public String getCat (Model model, @RequestParam String catName) {
         var catListProducts = productService.getAllCategoryProducts (catName);
         var attribMap = productService
-                .getAttribNamesAndValuesListMapPerCatImperative(catName);
+                .getAttribMapWithDifferentialSorting(catName);
         model.addAllAttributes(Map.of(
                 "productList", catListProducts,
                 "showAddProductForm", true,
