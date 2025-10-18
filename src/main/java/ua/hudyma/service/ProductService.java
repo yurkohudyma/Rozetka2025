@@ -27,11 +27,45 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class ProductService {
-
     private final AttributeRepository attributeRepository;
+
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+
+    @Transactional(readOnly = true)
+    public List<ProductDto> getCatFilteredProducts(String catName, Map<String, List<String>> filterMap) {
+        if (filterMap == null || filterMap.isEmpty()) {
+            return getAllCategoryProducts(catName);
+        }
+        var cleanedFilterMap = filterMap.entrySet().stream()
+                .filter(entry -> entry.getKey() != null && entry.getValue() != null && !entry.getValue().isEmpty())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().split("\\s")[0].trim(),
+                        entry -> entry.getValue().stream().map(String::trim).toList(),
+                        (existing, replacement) -> replacement
+                ));
+        List<Product> catProductList = productRepository.findAllByCategory_CategoryName(catName);
+        List<Product> filteredProducts = new ArrayList<>();
+
+        for (Product product : catProductList) {
+            boolean matches = cleanedFilterMap.entrySet().stream()
+                    .allMatch(filterEntry ->
+                            product.getProductPropertiesList().stream()
+                                    .anyMatch(prop ->
+                                            // Теж обрізаємо назву атрибута по пробілу перед порівнянням
+                                            prop.getAttribute().getAttributeName().equals(filterEntry.getKey()) &&
+                                                    filterEntry.getValue().contains(prop.getValue())
+                                    )
+                    );
+            if (matches) {
+                filteredProducts.add(product);
+            }
+        }
+        return filteredProducts.stream()
+                .map(productMapper::toDto)
+                .toList();
+    }
 
     //todo exclude price from attribs as it requires different js filtering
 
@@ -273,7 +307,8 @@ public class ProductService {
                         product.getCategory().getCategoryName(),
                         product.getProductName(),
                         product.getProductCode(),
-                        product.getProductPropertiesList().stream()
+                        product.getProductPropertiesList()
+                                .stream()
                                 .filter(pp -> pp.getAttribute() != null)
                                 .map(pp -> {
                                     Attribute attribute = pp.getAttribute();

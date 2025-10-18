@@ -16,7 +16,7 @@
 <body>
 
 <div class="wrapper">
-    <div class="filter_pane">
+    <div class="filter_pane" th:if="${showFilterPane}">
         <div th:each="entry : ${attribMap}">
             <strong>[[${entry.key}]]</strong>
             <ul>
@@ -27,6 +27,7 @@
                                 type="checkbox"
                                 name="filterChecked"
                                 th:value="${val}"
+                                th:attr="data-filter=${entry.key}"
                                 class="filter_checkbox"
                         />
                         [[${val}]]

@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,6 +29,7 @@ public class HomeController {
         model.addAllAttributes(Map.of(
                 "productList", productList,
                 "showAddProductForm", true,
+                "showFilterPane", false,
                 "catList", catList));
         return "store";
     }
@@ -41,6 +43,7 @@ public class HomeController {
                 "productList", catListProducts,
                 "showAddProductForm", true,
                 "catList", productService.getAllCats(),
+                "showFilterPane", true,
                 "attribMap", attribMap,
                 "cat", catName));
         return "store";
@@ -49,14 +52,18 @@ public class HomeController {
     @PostMapping("/filter/{catName}")
     public String filter (Model model, @PathVariable String catName,
                           @RequestBody FilterReqDto filterDto) {
-        log.info(filterDto.filters());
+        var filterMap = filterDto.filterMap();
+        log.info(filterMap);
         //todo catListProducts = engageFiltering
-        var catListProducts = productService.getAllCategoryProducts (catName);
+        //var catListProducts = productService.getAllCategoryProducts (catName);
+        var getCatFilteredProducts = productService
+                .getCatFilteredProducts(catName, filterMap);
         var attribMap = productService
                 .getAttribMapWithDifferentialSorting(catName);
         model.addAllAttributes(Map.of(
-                "productList", catListProducts,
+                "productList", getCatFilteredProducts,
                 "showAddProductForm", true,
+                "showFilterPane", true,
                 "catList", productService.getAllCats(),
                 "attribMap", attribMap,
                 "cat", catName));
