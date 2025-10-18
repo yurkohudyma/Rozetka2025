@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8" content="application/json">
+    <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
@@ -20,14 +20,24 @@
         <div th:each="entry : ${attribMap}">
             <strong>[[${entry.key}]]</strong>
             <ul>
-                <li th:each="val : ${entry.value}">
-                    [[${val}]]
+                <li th:each="val, iterStat : ${entry.value}">
+                    <label th:for="'filter_' + ${iterStat.index}">
+                        <input
+                                th:id="'filter_' + ${iterStat.index}"
+                                type="checkbox"
+                                name="filterChecked"
+                                th:value="${val}"
+                                class="filter_checkbox"
+                        />
+                        [[${val}]]
+                    </label>
                 </li>
             </ul>
         </div>
-
     </div>
-    <div class="content_area">
+
+
+    <div id = "products_container" class="content_area">
         <header>
             <h1 class="title">Панель адміна</h1>
 
@@ -118,13 +128,17 @@
             <!--<div class="product_unit" th:text="'№ '+${product.id}"></div>-->
             <!--<div class="product_model" th:text="${product.categoryName}"></div>-->
             <div class="product_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
-            <div class="product_unit" th:text="${product.productName}"></div> <!--ENUM "${product.productClass.str}"-->
+            <b>
+                <div class="product_unit" th:text="${product.productName}"></div>
+            </b> <!--ENUM "${product.productClass.str}"-->
             <div class="product_unit"> <!--th:text="'€ '+${product.price}">--></div>
             </br>
             <div class="product_unit" th:each="attribute : ${product.attributeList}">
                 <td th:text="${attribute.attrName} + ': ' + ${attribute.attribValue} + ' ' + ${attribute.attribUnit}"></td>
                 </tr>
             </div>
+
+
             <!--<div class="product_unit" th:text="'Місць: '+${product.seatsQuantity}"></div>
             <div class="product_unit" th:text="${product.propulsion.str}"></div>-->
             <!--<div class="product_unit">∑<span><sub>пот</sub></span>
@@ -204,6 +218,11 @@
 
     </div>
 </div>
+
+<script th:inline="javascript">
+        window.cat = [[${cat}]];
+    </script>
+<script src="/js/filter.js"></script>
 
 </body>
 </html>

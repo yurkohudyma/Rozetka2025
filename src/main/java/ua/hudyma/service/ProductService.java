@@ -32,7 +32,8 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final AttributeMapper attributeMapper;
+
+    //todo exclude price from attribs as it requires different js filtering
 
     @Transactional(readOnly = true)
     public List<ProductDto> getAllCategoryProducts(String catName) {
@@ -54,11 +55,13 @@ public class ProductService {
         allCatProducts.forEach(productDto -> {
             for (AttribDto attribDto : productDto.attributeList()) {
                 var attrName = attribDto.attrName();
-                var unitSuffix = attribDto.attribUnit().isEmpty() ? "" : " (" + attribDto.attribUnit() + ")";
+                var unitSuffix = attribDto.attribUnit().isEmpty() ? ""
+                        : " (" + attribDto.attribUnit() + ")";
                 var fullAttrName = attrName + unitSuffix;
                 var attrValue = attribDto.attribValue();
                 var attrType = attribDto.attributeType();
-                attrValuesMap.computeIfAbsent(fullAttrName, k -> new ArrayList<>()).add(attrValue);
+                attrValuesMap.computeIfAbsent(fullAttrName,
+                        k -> new ArrayList<>()).add(attrValue);
                 attrTypesMap.putIfAbsent(fullAttrName, attrType);
             }
         });

@@ -112,7 +112,7 @@ form {
 	margin-top: 5px;
 }
 
-#pickup_date, #drop-off_date, #aux_checkbox {
+#pickup_date, #drop-off_date, #aux_checkbox, #filter_checkbox {
 	flex: 1;
     margin: 0 10px;    
     border: 1px solid #67a300;

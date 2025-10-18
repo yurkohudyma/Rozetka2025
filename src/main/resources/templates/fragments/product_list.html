@@ -1,0 +1,70 @@
+<!-- templates/fragments/product_list.html -->
+<div th:fragment="productListFragment">
+
+    <div id = "products_container" class="content_area">
+        <header>
+            <h1 class="title">Панель адміна</h1>
+
+            <!--version tab-->
+            <h4 class="version_block" th:text="'v.' + ${@environment.getProperty('semisvit.store.version')}"></h4>
+        </header>
+
+        <!--MAIN MENU -->
+        <div class="buttons_block">
+            <form action="/" method="get">
+                <input type="submit" value="Головна" class="button">
+            </form>
+            <form action="#" th:action="@{/users}" th:method="get">
+                <input type="submit" value="Користувачі" class="button">
+            </form>
+            <form action="#" th:action="@{/orders}" th:method="get">
+                <input type="submit" value="Замовлення" class="button">
+            </form>
+        </div>
+
+
+        <!--PRODUCTS READOUT SECTION-->
+        <div class="products_header"></div>
+        <table>
+            <tr th:each="cat : ${catList}">
+                <td>
+                    <a th:href="@{/cat(catName=${cat})}" th:text="${cat}"></a>
+                </td>
+            </tr>
+        </table>
+
+        <div class="products_header">Товари</div>
+        <div class="product" th:each="product : ${productList}">
+            <div class="product_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
+            <b>
+                <div class="product_unit" th:text="${product.productName}"></div>
+            </b> <!--ENUM "${product.productClass.str}"-->
+            <div class="product_unit"> <!--th:text="'€ '+${product.price}">--></div>
+            </br>
+            <div class="product_unit" th:each="attribute : ${product.attributeList}">
+                <td th:text="${attribute.attrName} + ': ' + ${attribute.attribValue} + ' ' + ${attribute.attribUnit}"></td>
+                </tr>
+            </div>
+
+            <!--PRODUCT MODIFY ACTIONS BUTTONS-->
+            <div class="product_solecard_action_buttons_block">
+                <form action="#" th:action="@{'/products/'+${product.productCode}}" th:method="delete">
+                    <button type="submit" class="delete_ico_orderlist">
+                        <img th:src="@{/img/delete-button.png}" th:title="Видалити"/>
+                    </button>
+                </form>
+                <a href="edit.html" th:href="@{'/edit/'+${product.productCode}}">
+                    <img class="edit_ico_orderlist" th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
+                </a>
+            </div>
+        </div>
+
+
+        <!--CONTEXT ACTIONS BUTTONS-->
+        <div class="buttons_block" th:if="${!productList.isEmpty()} and ${showAddProductForm}">
+            <form action="#" th:action="@{/products}" th:method="delete">
+                <input type="submit" value="Видалити все" class="caution_button">
+            </form>
+        </div>
+    </div>
+</div>
