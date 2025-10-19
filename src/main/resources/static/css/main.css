@@ -221,15 +221,13 @@ textarea {
 }
 
 .resetButton{	
-border-style: none;
+	border-style: none;
 	outline-color: transparent;
 	border-radius: 6px;
-	/* background-color: #FF8300; */
-	color: #fff;
+	background-color: lightgray;
+	color: #000;
 	cursor: pointer;
-	margin-left:10px;
-	/* margin-right: 10px; */
-	/* margin-top: 10px; */
+	margin-left: 10px;
 	text-align: center;
 	font-size: 0.8em;
 }

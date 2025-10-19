@@ -37,7 +37,7 @@
             <div class="left-side">
                 <span th:text="'Товари (знайдено: ' + ${productList.size()} + ')'"></span>
             </div>
-            <div class="right-side" th:if="${showFilterResetButton}">
+            <div class="right-side" th:if="${showFilterResetButton}" style="display: none;" id="resetFiltersContainer">
                 <button id="selected-filters-reset" type="button" class="resetButton">Скинути фільтри</button>
             </div>
         </div>

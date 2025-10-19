@@ -124,7 +124,14 @@
             </tr>
         </table>
 
-        <div class="products_header">Товари</div>
+        <!--<div class="products_header">
+            <div class="left-side">
+                <span th:text="'Товари (знайдено: ' + ${productList.size()} + ')'"></span>
+            </div>
+            <div class="right-side" th:if="${showFilterResetButton}" style="display: none;" id="resetFiltersContainer">
+                <button id="selected-filters-reset" type="button" class="resetButton">Скинути фільтри</button>
+            </div>
+        </div>-->
         <div class="product" th:each="product : ${productList}">
             <!--th:class="${product.available == 0} ? product_not_available : product" >-->
             <!--<div class="product_unit" th:text="'№ '+${product.id}"></div>-->
