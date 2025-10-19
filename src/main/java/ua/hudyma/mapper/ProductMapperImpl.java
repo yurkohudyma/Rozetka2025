@@ -25,6 +25,7 @@ public class ProductMapperImpl implements ProductMapper{
                 product.getProductName(),
                 product.getProductName(),
                 product.getProductCode(),
+                product.getProductPrice(),
                 attribList
         );
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,4 +27,5 @@ public class Product {
             orphanRemoval = true
             )
     private List<ProductProperty> productPropertiesList = new ArrayList<>();
+    private BigDecimal productPrice;
 }

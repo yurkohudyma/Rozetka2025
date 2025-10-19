@@ -35,6 +35,7 @@ public class ProductService {
         if (filterMap == null || filterMap.isEmpty()) {
             return getAllCategoryProducts(catName);
         }
+        /** remove from attribNames concated attribUnit */
         var cleanedFilterMap = filterMap
                 .entrySet()
                 .stream()
@@ -306,6 +307,7 @@ public class ProductService {
                         product.getCategory().getCategoryName(),
                         product.getProductName(),
                         product.getProductCode(),
+                        product.getProductPrice(),
                         product.getProductPropertiesList()
                                 .stream()
                                 .filter(pp -> pp.getAttribute() != null)
