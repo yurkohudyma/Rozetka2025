@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // 1. Обробка чекбоксів фільтрів
     const checkboxes = document.querySelectorAll('.filter_checkbox');
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
@@ -43,4 +44,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     });
+
+    // 2. Обробка кнопки "Скинути фільтри"
+    const resetButton = document.getElementById('selected-filters-reset');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetSeatSelection);
+    }
+});
+
+// Окрема функція — скидання чекбоксів
+function resetSeatSelection() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    // Імітація події "change", щоб оновити продукти після скидання
+    document.querySelectorAll('.filter_checkbox').forEach(cb => {
+        cb.dispatchEvent(new Event('change'));
+    });
+
+    console.log('✅ Фільтри скинуто');
+}
+
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.id === 'selected-filters-reset') {
+        resetSeatSelection();
+    }
 });

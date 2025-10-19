@@ -30,21 +30,16 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    //todo products add form
+    //todo implem delete product
+    //todo implem edit/update product
+
     @Transactional(readOnly = true)
     public List<ProductDto> getCatFilteredProducts(String catName, Map<String, List<String>> filterMap) {
         if (filterMap == null || filterMap.isEmpty()) {
             return getAllCategoryProducts(catName);
         }
-        /** remove from attribNames concated attribUnit */
-        var cleanedFilterMap = filterMap
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getKey() != null && entry.getValue() != null && !entry.getValue().isEmpty())
-                .collect(Collectors.toMap(
-                        entry -> entry.getKey().replaceAll("\\s*\\(.*?\\)", ""),
-                        entry -> entry.getValue().stream().map(String::trim).toList(),
-                        (existing, replacement) -> replacement
-                ));
+        var cleanedFilterMap = getCleanedFilterMap(filterMap);
         List<Product> catProductList = productRepository.findAllByCategory_CategoryName(catName);
         List<Product> filteredProducts = new ArrayList<>();
 
@@ -67,13 +62,26 @@ public class ProductService {
         return mapListToDto(filteredProducts);
     }
 
+    /**
+     * removes concated attribUnit from attribNames
+     * */
+    private static Map<String, List<String>> getCleanedFilterMap(Map<String, List<String>> filterMap) {
+        return filterMap
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey() != null && entry.getValue() != null && !entry.getValue().isEmpty())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().replaceAll("\\s*\\(.*?\\)", ""),
+                        entry -> entry.getValue().stream().map(String::trim).toList(),
+                        (existing, replacement) -> replacement
+                ));
+    }
+
     private List<ProductDto> mapListToDto(List<Product> filteredProducts) {
         return filteredProducts.stream()
                 .map(productMapper::toDto)
                 .toList();
     }
-
-    //todo exclude price from attribs as it requires different js filtering
 
     @Transactional(readOnly = true)
     public List<ProductDto> getAllCategoryProducts(String catName) {
@@ -297,31 +305,5 @@ public class ProductService {
         categoryRepository.save(cat);
         log.info("Category '{}' CREATED", catName);
         return cat;
-    }
-
-    public List<ProductDto> getAllProductDtos() {
-        return productRepository
-                .findAll()
-                .stream()
-                .map(product -> new ProductDto(
-                        product.getCategory().getCategoryName(),
-                        product.getProductName(),
-                        product.getProductCode(),
-                        product.getProductPrice(),
-                        product.getProductPropertiesList()
-                                .stream()
-                                .filter(pp -> pp.getAttribute() != null)
-                                .map(pp -> {
-                                    Attribute attribute = pp.getAttribute();
-                                    return new AttribDto(
-                                            attribute.getAttributeName(),
-                                            pp.getValue(),
-                                            attribute.getAttributeType(),
-                                            pp.getAttributeUnit()
-                                    );
-                                })
-                                .toList()
-                ))
-                .toList();
     }
 }

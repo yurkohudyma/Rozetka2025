@@ -17,9 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 public class HomeController {
-
-    private final AttributeRepository attributeRepository;
-    private final CategoryRepository categoryRepository;
     private final ProductService productService;
 
     @GetMapping("/")
@@ -53,9 +50,6 @@ public class HomeController {
     public String filter (Model model, @PathVariable String catName,
                           @RequestBody FilterReqDto filterDto) {
         var filterMap = filterDto.filterMap();
-        log.info(filterMap);
-        //todo catListProducts = engageFiltering
-        //var catListProducts = productService.getAllCategoryProducts (catName);
         var getCatFilteredProducts = productService
                 .getCatFilteredProducts(catName, filterMap);
         var attribMap = productService
@@ -64,6 +58,7 @@ public class HomeController {
                 "productList", getCatFilteredProducts,
                 "showAddProductForm", true,
                 "showFilterPane", true,
+                "showFilterResetButton", true,
                 "catList", productService.getAllCats(),
                 "attribMap", attribMap,
                 "cat", catName));

@@ -1,7 +1,7 @@
 <!-- templates/fragments/product_list.html -->
 <div th:fragment="productListFragment">
 
-    <div id = "products_container" class="content_area">
+    <div id="products_container" class="content_area">
         <header>
             <h1 class="title">Панель адміна</h1>
 
@@ -33,7 +33,17 @@
             </tr>
         </table>
 
-        <div class="products_header">Товари</div>
+        <div class="products_header">
+            <div class="left-side">
+                <span th:text="'Товари (знайдено: ' + ${productList.size()} + ')'"></span>
+            </div>
+            <div class="right-side" th:if="${showFilterResetButton}">
+                <button id="selected-filters-reset" type="button" class="resetButton">Скинути фільтри</button>
+            </div>
+        </div>
+
+
+
         <div class="product" th:each="product : ${productList}">
             <div class="product_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
             <b>

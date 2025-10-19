@@ -17,6 +17,7 @@
 
 <div class="wrapper">
     <div class="filter_pane" th:if="${showFilterPane}">
+
         <div th:each="entry : ${attribMap}">
             <strong>[[${entry.key}]]</strong>
             <ul>
@@ -132,7 +133,7 @@
             <b>
                 <div class="product_unit" th:text="${product.productName}"></div>
             </b> <!--ENUM "${product.productClass.str}"-->
-            <div class="product_unit" th:text="'Ціна: ' + ${product.productPrice} + '₴'"></div>
+            <div class="product_unit" th:text="'Ціна: ' + ${product.productPrice} + ' ₴'"></div>
             <div class="product_unit"> <!--th:text="'€ '+${product.price}">--></div>
             </br>
             <div class="product_unit" th:each="attribute : ${product.attributeList}">

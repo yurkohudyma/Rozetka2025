@@ -210,14 +210,32 @@ textarea {
 
 .button {
 	border-style: none;
-    outline-color: transparent;
-    border-radius: 6px;
-    background-color: #FF8300;
-    color: #fff;    
-    cursor: pointer;
-    margin-right: 10px;
-    margin-top: 10px;
+	outline-color: transparent;
+	border-radius: 6px;
+	background-color: #FF8300;
+	color: #fff;
+	cursor: pointer;
+	margin-right: 10px;
+	margin-top: 10px;
 	text-align: center
+}
+
+.resetButton{	
+border-style: none;
+	outline-color: transparent;
+	border-radius: 6px;
+	/* background-color: #FF8300; */
+	color: #fff;
+	cursor: pointer;
+	margin-left:10px;
+	/* margin-right: 10px; */
+	/* margin-top: 10px; */
+	text-align: center;
+	font-size: 0.8em;
+}
+
+.resetFiltersButton{
+	/* margin-bottom: 20px;	 */
 }
 
 .button_user_account {
@@ -332,11 +350,20 @@ textarea {
     font-weight: 500;
 }
 
-.products_header, .users_header, .tx_header{		
+.users_header, .tx_header{		
 	font-size: 1.3em;    
 	margin: 10px;	
 	margin-top: 30px;
 } 
+
+.products_header{
+	font-size: 1.3em;    
+	margin: 10px;	
+	margin-top: 30px;
+	display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
 
 .order_header {
 	font-size: 1.3em;    
