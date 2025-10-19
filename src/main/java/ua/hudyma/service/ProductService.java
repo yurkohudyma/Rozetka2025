@@ -222,7 +222,7 @@ public class ProductService {
     }
 
     /**
-     * Перевіряє, чи строкове поле не є null або порожнім.
+     * Перевіряє, чи рядкове поле не є null або порожнім.
      *
      * @param fieldName значення для перевірки
      * @throws DtoObligatoryFieldsAreMissingException якщо значення некоректне
