@@ -35,6 +35,56 @@ html, body {
     margin-top: 80px;
 }
 
+.price_slider {
+}
+
+/* Розміри та відступи */
+.price_filter_block {
+    margin-bottom: 20px;
+}
+
+#price-slider {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 10px;
+}
+
+/* Розміри самого повзунка */
+.noUi-target {
+    background: #ddd;
+    border-radius: 4px;
+    height: 8px;
+}
+
+.noUi-connect {
+    background: #007bff; /* синій сегмент */
+}
+
+.noUi-handle {
+    background: white;
+    border: 1px solid #007bff;
+    border-radius: 50%;
+    cursor: grab;
+    height: 18px;
+    width: 18px;
+    top: -6px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+.noUi-handle:after,
+.noUi-handle:before {
+    display: none;
+}
+
+/* Ціна під слайдером */
+.price-values {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+}
+
+
 header {
     display: flex;
     justify-content: space-between;    

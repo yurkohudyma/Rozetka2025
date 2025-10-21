@@ -1,6 +1,9 @@
 <!-- templates/fragments/product_list.html -->
 <div th:fragment="productListFragment">
 
+    <input type="hidden" id="minPriceGlobal" value="[[${priceDto.minPrice}]]">
+    <input type="hidden" id="maxPriceGlobal" value="[[${priceDto.maxPrice}]]">
+
     <div id="products_container" class="content_area">
         <header>
             <h1 class="title">Панель адміна</h1>
@@ -42,13 +45,12 @@
             </div>
         </div>
 
-
-
         <div class="product" th:each="product : ${productList}">
             <div class="product_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
             <b>
                 <div class="product_unit" th:text="${product.productName}"></div>
             </b> <!--ENUM "${product.productClass.str}"-->
+            <div class="product_unit" th:text="'Ціна: ' + ${product.productPrice} + ' ₴'"></div>
             <div class="product_unit"> <!--th:text="'€ '+${product.price}">--></div>
             </br>
             <div class="product_unit" th:each="attribute : ${product.attributeList}">

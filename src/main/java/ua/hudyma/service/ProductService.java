@@ -2,6 +2,7 @@ package ua.hudyma.service;
 
 import ua.hudyma.domain.*;
 import ua.hudyma.dto.AttribDto;
+import ua.hudyma.dto.MinMaxPricesDto;
 import ua.hudyma.dto.ProductDto;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
@@ -15,6 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,10 +36,19 @@ public class ProductService {
     //todo implem delete product
     //todo implem edit/update product
 
+    public List<ProductDto> filterByPrice (BigDecimal min, BigDecimal max, String catName){
+        if (min == null || max == null){
+            return mapListToDto(productRepository.findAllByCategory_CategoryName(catName));
+        }
+        return mapListToDto(productRepository.findAllByCategory_CategoryNameAndProductPriceBetween(catName, min, max));
+    }
+
     @Transactional(readOnly = true)
-    public List<ProductDto> getCatFilteredProducts(String catName, Map<String, List<String>> filterMap) {
+    public List<ProductDto> getCatFilteredProducts(String catName,
+                                                   Map<String, List<String>> filterMap,
+                                                   BigDecimal maxPrice, BigDecimal minPrice) {
         if (filterMap == null || filterMap.isEmpty()) {
-            return getAllCategoryProducts(catName);
+            return filterByPrice(minPrice, maxPrice, catName);
         }
         var cleanedFilterMap = getCleanedFilterMap(filterMap);
         List<Product> catProductList = productRepository.findAllByCategory_CategoryName(catName);
@@ -55,7 +66,10 @@ public class ProductService {
                                                     filterEntry.getValue().contains(prop.getValue()
                                                     ))
                     );
-            if (matches) {
+            var productPrice = product.getProductPrice();
+            boolean priceFitsBetweenRange =  productPrice.compareTo(minPrice) >= 0 &&
+                                             productPrice.compareTo(maxPrice) <= 0;
+            if (matches && priceFitsBetweenRange) {
                 filteredProducts.add(product);
             }
         }
@@ -75,6 +89,20 @@ public class ProductService {
                         entry -> entry.getValue().stream().map(String::trim).toList(),
                         (existing, replacement) -> replacement
                 ));
+    }
+
+    public MinMaxPricesDto getMinMaxPricesDto(List<ProductDto> getCatFilteredProducts) {
+        var minPrice = getCatFilteredProducts
+                .stream()
+                .map(ProductDto::productPrice)
+                .min(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
+        var maxPrice = getCatFilteredProducts
+                .stream()
+                .map(ProductDto::productPrice)
+                .max(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
+        return new MinMaxPricesDto(maxPrice, minPrice);
     }
 
     private List<ProductDto> mapListToDto(List<Product> filteredProducts) {

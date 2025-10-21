@@ -9,7 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&display=swap"
           rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
 
     <title>Розетка2025 ::: Товари</title>
 </head>
@@ -17,7 +20,14 @@
 
 <div class="wrapper">
     <div class="filter_pane" th:if="${showFilterPane}">
-
+        <div class="price_filter_block">
+            <strong>Ціна</strong>
+            <div id="price-slider" th:attr="data-min=${minPrice}, data-max=${maxPrice}"></div>
+            <div class="price-values">
+                <span id="min-price" th:text="${minPrice}"></span>
+                <span id="max-price" th:text="${maxPrice}"></span>
+            </div>
+        </div>
         <div th:each="entry : ${attribMap}">
             <strong>[[${entry.key}]]</strong>
             <ul>
@@ -39,7 +49,7 @@
     </div>
 
 
-    <div id = "products_container" class="content_area">
+    <div id="products_container" class="content_area">
         <header>
             <h1 class="title">Панель адміна</h1>
 
@@ -58,7 +68,7 @@
             </div>
     -->
             <!--version tab-->
-            <h4 class="version_block" th:text="'v.' + ${@environment.getProperty('semisvit.store.version')}"></h4>
+            <h4 class="version_block" th:text="'v.' + ${@environment.getProperty('rozetka2025.store.version')}"></h4>
         </header>
 
         <!--MAIN MENU -->
@@ -230,9 +240,13 @@
 </div>
 
 <script th:inline="javascript">
-        window.cat = [[${cat}]];
-    </script>
+       window.cat = [[${cat}]];
+       window.minPrice = [[${minPrice}]];
+       window.maxPrice = [[${maxPrice}]];
+
+</script>
 <script src="/js/filter.js"></script>
+<script src="/js/priceSlider.js"></script>
 
 </body>
 </html>

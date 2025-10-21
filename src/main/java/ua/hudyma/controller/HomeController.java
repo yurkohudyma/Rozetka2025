@@ -2,15 +2,12 @@ package ua.hudyma.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ua.hudyma.dto.FilterReqDto;
-import ua.hudyma.repository.AttributeRepository;
-import ua.hudyma.repository.CategoryRepository;
 import ua.hudyma.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,13 +33,17 @@ public class HomeController {
         var catListProducts = productService.getAllCategoryProducts (catName);
         var attribMap = productService
                 .getAttribMapWithDifferentialSorting(catName);
+        var minMaxPriceDto = productService
+                .getMinMaxPricesDto(catListProducts);
         model.addAllAttributes(Map.of(
                 "productList", catListProducts,
                 "showAddProductForm", true,
                 "catList", productService.getAllCats(),
                 "showFilterPane", true,
                 "attribMap", attribMap,
-                "cat", catName));
+                "cat", catName,
+                "maxPrice", minMaxPriceDto.maxPrice(),
+                "minPrice", minMaxPriceDto.minPrice()));
         return "store";
     }
 
@@ -50,8 +51,14 @@ public class HomeController {
     public String filter (Model model, @PathVariable String catName,
                           @RequestBody FilterReqDto filterDto) {
         var filterMap = filterDto.filterMap();
+        var selectedMinPrice = filterDto.minPrice();
+        var selectedMaxPrice = filterDto.maxPrice();
         var getCatFilteredProducts = productService
-                .getCatFilteredProducts(catName, filterMap);
+                .getCatFilteredProducts(
+                        catName,
+                        filterMap,
+                        selectedMaxPrice,
+                        selectedMinPrice);
         var attribMap = productService
                 .getAttribMapWithDifferentialSorting(catName);
         model.addAllAttributes(Map.of(

@@ -1,6 +1,6 @@
-semisvit:
+rozetka2025:
   store:
-    version: 0.0.1
+    version: 0.0.2
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/rozetka2025
