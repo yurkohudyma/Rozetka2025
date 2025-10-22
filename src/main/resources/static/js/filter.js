@@ -115,18 +115,6 @@ function resetFiltersSelection() {
     console.log('✅ Фільтри скинуто (чекбокси + слайдер)');
 }
 
-
-/*function resetFiltersSelection() {
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
-
-    // Один раз тригеримо applyFilters напряму
-    applyFilters();
-
-    console.log('✅ Фільтри скинуто');
-}*/
-
 function bindResetButton() {
     const resetButton = document.getElementById('selected-filters-reset');
     if (resetButton) {
@@ -155,14 +143,3 @@ function updateResetButtonVisibility() {
         resetContainer.style.display = (anyChecked || sliderChanged) ? 'block' : 'none';
     }
 }
-
-
-/*
-function updateResetButtonVisibility() {
-    const anyChecked = document.querySelectorAll('.filter_checkbox:checked').length > 0;
-    const resetContainer = document.getElementById('resetFiltersContainer');
-
-    if (resetContainer) {
-        resetContainer.style.display = anyChecked ? 'block' : 'none';
-    }
-}*/

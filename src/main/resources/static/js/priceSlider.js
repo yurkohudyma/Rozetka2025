@@ -33,9 +33,25 @@ document.addEventListener('DOMContentLoaded', function () {
     slider.noUiSlider.on('update', function (values) {
         if (minDisplay) minDisplay.textContent = values[0];
         if (maxDisplay) maxDisplay.textContent = values[1];
+
+        updateResetButtonVisibility(); // 👈 викликається разом
+    });
+
+    slider.noUiSlider.on('change', function () {
+        applyFilters(); // 👈 окремо, бо не хочеш фетчити на кожен піксель
+    });
+
+
+    /*slider.noUiSlider.on('update', function (values) {
+        if (minDisplay) minDisplay.textContent = values[0];
+        if (maxDisplay) maxDisplay.textContent = values[1];
     });
 
     slider.noUiSlider.on('change', function () {
         applyFilters();
     });
+
+    slider.noUiSlider.on('update', function () {
+        updateResetButtonVisibility();
+    });*/
 });

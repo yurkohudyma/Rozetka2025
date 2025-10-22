@@ -6,6 +6,7 @@ import ua.hudyma.dto.MinMaxPricesDto;
 import ua.hudyma.dto.ProductDto;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
+import ua.hudyma.mapper.AttributeMapper;
 import ua.hudyma.mapper.ProductMapper;
 import ua.hudyma.repository.AttributeRepository;
 import ua.hudyma.repository.CategoryRepository;
@@ -31,11 +32,12 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final AttributeMapper attributeMapper;
+
 
     //todo products add form
     //todo implem delete product
     //todo implem edit/update product
-
     public List<ProductDto> filterByPrice (BigDecimal min, BigDecimal max, String catName){
         if (min == null || max == null){
             return mapListToDto(productRepository.findAllByCategory_CategoryName(catName));
@@ -178,6 +180,16 @@ public class ProductService {
                 .findAll());
     }
 
+    public ProductDto createProductWithAttributes(Product product, String catName, Attribute[] attributes) {
+        var dto = new ProductDto(
+                catName,
+                product.getProductName(),
+                IdGenerator.generateProductCode(catName),
+                product.getProductPrice(),
+                attributeMapper.toDtoList(attributes)
+        );
+        return createProductWithAttributes(dto);
+    }
 
     /**
      * Створює новий товар з атрибутами.
@@ -199,7 +211,7 @@ public class ProductService {
         }
         var categoryName = dto.categoryName();
         check(categoryName);
-        Category category = categoryRepository
+        var category = categoryRepository
                 .findByCategoryName(categoryName)
                 .orElseGet(() -> createCategory(categoryName));
         var dtoAttributesList = dto.attributeList();
@@ -211,7 +223,7 @@ public class ProductService {
         product.setCategory(category);
         product.setProductCode(IdGenerator.generateProductCode(categoryName));
         productRepository.save(product);
-        var attributesList = emergeAttributesListFromDtoAndSaveNew(
+        var attributesList = extractAttributesListFromDtoAndSaveNew(
                 dtoAttributesList, category);
         attributesList.forEach(attribute -> {
             var attribReqDto = findValueFromDtoList(dtoAttributesList, attribute);
@@ -278,7 +290,7 @@ public class ProductService {
      * @return список атрибутів, збережених у БД
      */
     @Transactional
-    private List<Attribute> emergeAttributesListFromDtoAndSaveNew(List<AttribDto> dtoAttributesList, Category category) {
+    private List<Attribute> extractAttributesListFromDtoAndSaveNew(List<AttribDto> dtoAttributesList, Category category) {
         var newAttributes = new ArrayList<Attribute>();
         for (AttribDto attr : dtoAttributesList) {
             if (!attributeExistsByName(attr.attrName())) {

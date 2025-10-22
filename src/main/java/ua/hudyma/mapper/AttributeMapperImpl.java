@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import ua.hudyma.domain.Attribute;
 import ua.hudyma.dto.AttribDto;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class AttributeMapperImpl implements AttributeMapper {
 
@@ -23,5 +26,21 @@ public class AttributeMapperImpl implements AttributeMapper {
                 attribute.getAttributeType(),
                 null
         );
+    }
+
+    @Override
+    public List<AttribDto> toDtoList(Attribute[] attributes) {
+        return Arrays
+                .stream(attributes)
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<AttribDto> toDtoList(List<Attribute> attributes) {
+        return attributes
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 }

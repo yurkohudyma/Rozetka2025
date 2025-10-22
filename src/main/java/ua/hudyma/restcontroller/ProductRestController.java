@@ -12,6 +12,7 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class ProductRestController {
     private final ProductService productService;
 

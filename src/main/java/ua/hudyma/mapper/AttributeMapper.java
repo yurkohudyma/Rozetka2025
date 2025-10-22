@@ -3,7 +3,14 @@ package ua.hudyma.mapper;
 import ua.hudyma.domain.Attribute;
 import ua.hudyma.dto.AttribDto;
 
+import java.util.List;
+
 public interface AttributeMapper {
     AttribDto toDto (Attribute attribute);
+
+    List<AttribDto> toDtoList(Attribute[] attributes);
+
+    List<AttribDto> toDtoList(List<Attribute> attributes);
+
     Attribute toEntity (AttribDto dto);
 }

@@ -248,6 +248,33 @@ textarea {
 
 }
 
+.addProductButton {
+}
+
+.hiddenCatInput{
+	padding:10px;
+}
+
+.addProductModal{
+	display:none;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100vw;
+	height:100vh;
+	background:rgba(0,0,0,0.6);
+	z-index:1000;            
+}
+
+.addProductModalBack{
+	background:#fff;
+	width:400px;
+	margin:10% auto;
+	padding:20px;
+	border-radius:8px;
+    position:relative;
+}
+
 .catTable {
 	box-shadow: 0 5px 10px rgb(0 0 0 / 20%);    
     border-radius: 10px;    

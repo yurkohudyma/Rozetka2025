@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 @Controller
@@ -22,22 +23,20 @@ public class HomeController {
         var catList = productService.getAllCats();
         model.addAllAttributes(Map.of(
                 "productList", productList,
-                "showAddProductForm", true,
                 "showFilterPane", false,
                 "catList", catList));
         return "store";
     }
 
     @GetMapping("/cat")
-    public String getCat (Model model, @RequestParam String catName) {
-        var catListProducts = productService.getAllCategoryProducts (catName);
+    public String getCat(Model model, @RequestParam String catName) {
+        var catListProducts = productService.getAllCategoryProducts(catName);
         var attribMap = productService
                 .getAttribMapWithDifferentialSorting(catName);
         var minMaxPriceDto = productService
                 .getMinMaxPricesDto(catListProducts);
         model.addAllAttributes(Map.of(
                 "productList", catListProducts,
-                "showAddProductForm", true,
                 "catList", productService.getAllCats(),
                 "showFilterPane", true,
                 "attribMap", attribMap,
@@ -48,8 +47,8 @@ public class HomeController {
     }
 
     @PostMapping("/filter/{catName}")
-    public String filter (Model model, @PathVariable String catName,
-                          @RequestBody FilterReqDto filterDto) {
+    public String filter(Model model, @PathVariable String catName,
+                         @RequestBody FilterReqDto filterDto) {
         var filterMap = filterDto.filterMap();
         var selectedMinPrice = filterDto.minPrice();
         var selectedMaxPrice = filterDto.maxPrice();
@@ -63,7 +62,6 @@ public class HomeController {
                 .getAttribMapWithDifferentialSorting(catName);
         model.addAllAttributes(Map.of(
                 "productList", getCatFilteredProducts,
-                "showAddProductForm", true,
                 "showFilterPane", true,
                 "showFilterResetButton", true,
                 "catList", productService.getAllCats(),
@@ -71,4 +69,15 @@ public class HomeController {
                 "cat", catName));
         return "fragments/product_list :: productListFragment";
     }
+
+    @PostMapping("/products/add")
+    public String addMovie(@RequestParam("name") String name,
+                           @RequestParam("price") BigDecimal price,
+                           @RequestParam("cat") String cat)
+    //todo implement
+    {
+        return "redirect:/products";
+    }
+
+
 }

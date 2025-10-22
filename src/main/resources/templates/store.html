@@ -85,7 +85,57 @@
             <!-- <form action="#" th:if="${soleProductProductd}" th:action="@{/products}" th:method="get">
                  <input type="submit" value="Авто" class="button">
              </form>-->
+            <button onclick="openAddProductModal()" class="addProductButton">Додати товар</button>
+
         </div>
+
+        <!-- ADD PRODUCT MODAL -->
+        <div id="addProductModal" class="addProductModal">
+            <div class="addProductModalBack">
+                <h3>Додати товар</h3>
+                <form th:action="@{/products/add}" method="post">
+                    <label for="category_input">Категорія</label>
+                    <select class="select_button" id="category_input" name="cat"
+                            onchange="checkAddNew(this)">
+                        <option th:each="cat : ${catList}" th:value="${cat}"
+                                th:text="${cat}"></option>
+                        <option value="__add__">:: Нова категорія ::</option>
+                    </select><br><br>
+                    <!-- Схований блок для додавання -->
+                    <div id="addNewWrapper" style="display:none;" class="hiddenCatInput">
+                        <input type="text" id="newValueInput" placeholder="Нова категорія">
+                        <button onclick="addNewOption()">Додати</button>
+                    </div>
+                    <label>Назва:</label>
+                    <input type="text" name="name" required><br><br>
+                    <label>Ціна:</label>
+                    <input type="number" name="price" step="10" title="[xx.yy]" required
+                           pattern="\d+[.]?\d*"> ₴<br><br>
+
+                    <div id="attributesContainer"></div>
+
+                    <!-- Додавання нового атрибуту -->
+                    <div id="newAttributeSection" style="display:none;">
+                        <h4>Новий атрибут</h4>
+                        <input type="text" id="newAttrName" placeholder="Назва атрибуту">
+                        <input type="text" id="newAttrValue" placeholder="Значення">
+                        <input type="text" id="newAttrUnit" placeholder="Одиниця виміру"><br>
+                        <label for="newAttrType">Тип атрибута: </label>
+                        <select id="newAttrType">
+                            <option value="STRING">STRING</option>
+                            <option value="NUMBER">NUMBER</option>
+                            <option value="BOOLEAN">BOOLEAN</option>
+                            <option value="SELECT">SELECT</option>
+                        </select><br>
+                        <button type="button" onclick="addNewAttribute()">Додати атрибут</button>
+                    </div>
+
+                    <button type="submit">Зберегти</button>
+                    <button type="button" onclick="closeAddProductModal()">Скасувати</button>
+                </form>
+            </div>
+        </div>
+
 
         <!--<div class="product_entry_form_block" th:if="${showAddProductForm}">-->
 
@@ -183,7 +233,7 @@
 
 
         <!--CONTEXT ACTIONS BUTTONS-->
-        <div class="buttons_block" th:if="${!productList.isEmpty()} and ${showAddProductForm}">
+        <div class="buttons_block" th:if="${!productList.isEmpty()}">
             <form action="#" th:action="@{/products}" th:method="delete">
                 <input type="submit" value="Видалити все" class="caution_button">
             </form>
@@ -247,6 +297,7 @@
 </script>
 <script src="/js/filter.js"></script>
 <script src="/js/priceSlider.js"></script>
+<script src="/js/modal.js"></script>
 
 </body>
 </html>
