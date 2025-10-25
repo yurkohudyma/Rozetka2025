@@ -57,10 +57,20 @@ function addNewOption() {
 function getAllCatAttribs(categoryName) {
     const encodedCategory = encodeURIComponent(categoryName);
 
-    fetch(`/attributes/getCatAttribs?catName=${encodedCategory}`)
+    fetch(`/api/attributes/getCatAttribs?catName=${encodedCategory}`)
+      .then(res => res.json())                // перетворюємо відповідь у JSON
+      .then(data => {
+        console.log(data);                    // виводимо реальні дані
+        renderAttributes(data);               // далі відображаємо
+      })
+      .catch(err => console.error('Помилка при завантаженні атрибутів:', err));
+
+
+    /*fetch(`/attributes/getCatAttribs?catName=${encodedCategory}`)
         .then(res => res.json())
+        .then(res => console.log(res.json))
         .then(data => renderAttributes(data))
-        .catch(err => console.error('Помилка при завантаженні атрибутів:', err));
+        .catch(err => console.error('Помилка при завантаженні атрибутів:', err));*/
 }
 
 function renderAttributes(attributes) {

@@ -19,9 +19,7 @@ public class Category {
     private String categoryName;
     @OneToMany(mappedBy = "category")
     private List<Product> productList = new ArrayList<>();
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "categoryList")
     private List<Attribute> attributesList = new ArrayList<>();
-
-    //todo refuck into Many2Many
 }
 

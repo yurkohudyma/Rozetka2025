@@ -222,6 +222,7 @@ public class ProductService {
         product.setProductName(productName);
         product.setCategory(category);
         product.setProductCode(IdGenerator.generateProductCode(categoryName));
+        product.setProductPrice(dto.productPrice());
         productRepository.save(product);
         var attributesList = extractAttributesListFromDtoAndSaveNew(
                 dtoAttributesList, category);
@@ -230,6 +231,7 @@ public class ProductService {
             var productProperty = createProductProperty(attribute, attribReqDto);
             productProperty.setProduct(product);
             product.getProductPropertiesList().add(productProperty);
+            category.getAttributesList().add(attribute);
         });
         productRepository.save(product);
         product.getProductPropertiesList().forEach(pp ->
@@ -293,12 +295,19 @@ public class ProductService {
     private List<Attribute> extractAttributesListFromDtoAndSaveNew(List<AttribDto> dtoAttributesList, Category category) {
         var newAttributes = new ArrayList<Attribute>();
         for (AttribDto attr : dtoAttributesList) {
-            if (!attributeExistsByName(attr.attrName())) {
-                var attribute = new Attribute();
-                attribute.setAttributeName(attr.attrName());
-                attribute.setCategory(category);
-                attribute.setAttributeType(attr.attributeType());
-                newAttributes.add(attribute);
+            var attribute = attributeRepository.findByAttributeName(attr.attrName());
+            if (attribute.isEmpty()) {
+                var newAttribute = new Attribute();
+                var uppercasedAttribName = uppercaseFirstLetter (attr.attrName());
+                newAttribute.setAttributeName(uppercasedAttribName);
+                newAttribute.getCategoryList().add(category);
+                newAttribute.setAttributeType(attr.attributeType());
+                newAttributes.add(newAttribute);
+            }
+            else {
+                var attribOpt = attribute.get();
+                category.getAttributesList().add(attribOpt);
+                attribOpt.getCategoryList().add(category);
             }
         }
         if (!newAttributes.isEmpty()) {
@@ -312,6 +321,14 @@ public class ProductService {
                                 .map(AttribDto::attrName)
                                 .toList());
     }
+
+    private String uppercaseFirstLetter(String attrName) {
+        if (attrName == null || attrName.isEmpty()) {
+            return attrName;
+        }
+        return attrName.substring(0, 1).toUpperCase() + attrName.substring(1);
+    }
+
 
     /**
      * Перевіряє, чи атрибут з таким ім’ям уже існує.

@@ -70,14 +70,14 @@ public class HomeController {
         return "fragments/product_list :: productListFragment";
     }
 
-    @PostMapping("/products/add")
-    public String addMovie(@RequestParam("name") String name,
+    /*@PostMapping("/products/add")
+    public String addProduct(@RequestParam("name") String name,
                            @RequestParam("price") BigDecimal price,
                            @RequestParam("cat") String cat)
     //todo implement
     {
         return "redirect:/products";
-    }
+    }*/
 
 
 }

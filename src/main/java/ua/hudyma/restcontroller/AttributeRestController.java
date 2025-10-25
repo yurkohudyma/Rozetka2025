@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class AttributeRestController {
     private final AttributeRepository attributeRepository;
     private final AttributeMapper attributeMapper;
@@ -22,9 +23,6 @@ public class AttributeRestController {
     public List<AttribDto> getCatAttribs (@RequestParam String catName){
         return attributeMapper
                 .toDtoList(attributeRepository
-                        .findAllByCategory_CategoryName(catName));
+                        .findAllByCategoryList_CategoryName(catName));
     }
-
-    //todo вирішити проблему перевикористання атрибутів для різних категорій
-    // ==> Cat <-> Attrib ManyToMany
 }
