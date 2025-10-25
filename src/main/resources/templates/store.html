@@ -95,7 +95,7 @@
                 <h3>Додати товар</h3>
                 <form th:action="@{/products/add}" method="post">
                     <label for="category_input">Категорія</label>
-                    <select class="select_button" id="category_input" name="cat"
+                    <select class="select_button" id="category_input" name="categoryName"
                             onchange="checkAddNew(this)">
                         <option th:each="cat : ${catList}" th:value="${cat}"
                                 th:text="${cat}"></option>
@@ -107,9 +107,9 @@
                         <button onclick="addNewOption()">Додати</button>
                     </div>
                     <label>Назва:</label>
-                    <input type="text" name="name" required><br><br>
+                    <input type="text" name="productName" required><br><br>
                     <label>Ціна:</label>
-                    <input type="number" name="price" step="10" title="[xx.yy]" required
+                    <input type="number" name="productPrice" step="10" title="[xx.yy]" required
                            pattern="\d+[.]?\d*"> ₴<br><br>
 
                     <div id="attributesContainer"></div>

@@ -64,18 +64,12 @@ function getAllCatAttribs(categoryName) {
         renderAttributes(data);               // далі відображаємо
       })
       .catch(err => console.error('Помилка при завантаженні атрибутів:', err));
-
-
-    /*fetch(`/attributes/getCatAttribs?catName=${encodedCategory}`)
-        .then(res => res.json())
-        .then(res => console.log(res.json))
-        .then(data => renderAttributes(data))
-        .catch(err => console.error('Помилка при завантаженні атрибутів:', err));*/
 }
 
 function renderAttributes(attributes) {
     const container = document.getElementById('attributesContainer');
     container.innerHTML = ''; // Очистити попереднє
+    console.log(attributes)
 
     attributes.forEach((attr, index) => {
         const wrapper = document.createElement('div');
@@ -84,6 +78,7 @@ function renderAttributes(attributes) {
         wrapper.innerHTML = `
             <label>${attr.attrName}:</label>
             <input type="text" name="attributeList[${index}].attribValue" value="${attr.attribValue || ''}">
+            <span>${attr.attribUnit ? ' ' + attr.attribUnit : ''}</span>
             <input type="hidden" name="attributeList[${index}].attrName" value="${attr.attrName}">
             <input type="hidden" name="attributeList[${index}].attributeType" value="${attr.attributeType}">
             <input type="hidden" name="attributeList[${index}].attribUnit" value="${attr.attribUnit || ''}">

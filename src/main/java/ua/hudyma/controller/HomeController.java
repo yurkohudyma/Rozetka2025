@@ -2,13 +2,13 @@ package ua.hudyma.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ua.hudyma.dto.FilterReqDto;
+import ua.hudyma.dto.ProductDto;
 import ua.hudyma.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @Controller
@@ -70,14 +70,11 @@ public class HomeController {
         return "fragments/product_list :: productListFragment";
     }
 
-    /*@PostMapping("/products/add")
-    public String addProduct(@RequestParam("name") String name,
-                           @RequestParam("price") BigDecimal price,
-                           @RequestParam("cat") String cat)
-    //todo implement
-    {
-        return "redirect:/products";
-    }*/
+    @PostMapping("/products/add")
+    public String addProduct(@ModelAttribute ProductDto productDto) {
+        productService.createProductWithAttributes(productDto);
+        return "redirect:/";
+    }
 
 
 }
