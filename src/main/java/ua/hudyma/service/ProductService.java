@@ -9,6 +9,7 @@ import ua.hudyma.exception.ProductAlreadyExistsException;
 import ua.hudyma.mapper.AttributeMapper;
 import ua.hudyma.mapper.ProductMapper;
 import ua.hudyma.repository.AttributeRepository;
+import ua.hudyma.repository.AttributeUnitRepository;
 import ua.hudyma.repository.CategoryRepository;
 import ua.hudyma.repository.ProductRepository;
 import ua.hudyma.util.IdGenerator;
@@ -31,6 +32,7 @@ public class ProductService {
     private final AttributeRepository attributeRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final AttributeUnitRepository attributeUnitRepository;
     private final ProductMapper productMapper;
     private final AttributeMapper attributeMapper;
 
@@ -43,6 +45,12 @@ public class ProductService {
             return mapListToDto(productRepository.findAllByCategory_CategoryName(catName));
         }
         return mapListToDto(productRepository.findAllByCategory_CategoryNameAndProductPriceBetween(catName, min, max));
+    }
+
+    @Transactional(readOnly = true)
+    public List<AttributeUnit> findAllAttribUnitsByName(String attribName) {
+        return attributeUnitRepository
+                .findAllByAttribute_AttributeName(attribName);
     }
 
     @Transactional(readOnly = true)
@@ -180,7 +188,7 @@ public class ProductService {
                 .findAll());
     }
 
-    public ProductDto createProductWithAttributes(Product product, String catName, Attribute[] attributes) {
+   /* public ProductDto createProductWithAttributes(Product product, String catName, Attribute[] attributes) {
         var dto = new ProductDto(
                 catName,
                 product.getProductName(),
@@ -189,7 +197,7 @@ public class ProductService {
                 attributeMapper.toDtoList(attributes)
         );
         return createProductWithAttributes(dto);
-    }
+    }*/
 
     /**
      * Створює новий товар з атрибутами.
@@ -293,7 +301,7 @@ public class ProductService {
      */
     @Transactional
     private List<Attribute> extractAttributesListFromDtoAndSaveNew(List<AttribDto> dtoAttributesList, Category category) {
-        var newAttributes = new ArrayList<Attribute>();
+        var newAttributesList = new ArrayList<Attribute>();
         for (AttribDto attr : dtoAttributesList) {
             var attribute = attributeRepository.findByAttributeName(attr.attrName());
             if (attribute.isEmpty()) {
@@ -302,17 +310,31 @@ public class ProductService {
                 newAttribute.setAttributeName(uppercasedAttribName);
                 newAttribute.getCategoryList().add(category);
                 newAttribute.setAttributeType(attr.attributeType());
-                newAttributes.add(newAttribute);
+                newAttribute.setAttributeValue(attr.attribValue());
+                if (!attr.attribUnit().isEmpty()){
+                    var newAttribUnit = createAttribUnit(attr, newAttribute);
+                    newAttribute.getAttributeUnitList().add(newAttribUnit);
+                }
+                newAttributesList.add(newAttribute);
             }
             else {
                 var attribOpt = attribute.get();
                 category.getAttributesList().add(attribOpt);
                 attribOpt.getCategoryList().add(category);
+                String attributeValue = attribOpt.getAttributeValue();
+                if (attributeValue == null || attributeValue.isEmpty()){
+                    attribOpt.setAttributeValue(attr.attribValue());
+                }
+                if (!attributeUnitRepository.existsByAttribute_IdAndValue(attribOpt.getId(), attr.attribValue())
+                        && !attr.attribUnit().isEmpty()){
+                    var newAttribUnit = createAttribUnit(attr, attribOpt);
+                    attribOpt.getAttributeUnitList().add(newAttribUnit);
+                }
             }
         }
-        if (!newAttributes.isEmpty()) {
-            attributeRepository.saveAll(newAttributes);
-            log.info("List of {} new attributes CREATED", newAttributes.size());
+        if (!newAttributesList.isEmpty()) {
+            attributeRepository.saveAll(newAttributesList);
+            log.info("List of {} new attributes CREATED", newAttributesList.size());
         }
         return attributeRepository
                 .findAllByAttributeNameIn(
@@ -320,6 +342,14 @@ public class ProductService {
                                 .stream()
                                 .map(AttribDto::attrName)
                                 .toList());
+    }
+
+    private static AttributeUnit createAttribUnit( AttribDto attr, Attribute newAttribute) {
+        var newAttribUnit = new AttributeUnit();
+        newAttribUnit.setAttribute(newAttribute);
+        newAttribUnit.setValue(attr.attribUnit());
+        newAttribute.getAttributeUnitList().add(newAttribUnit);
+        return newAttribUnit;
     }
 
     private String uppercaseFirstLetter(String attrName) {

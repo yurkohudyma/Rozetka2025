@@ -22,6 +22,25 @@ html, body {
     overflow: auto;   /* якщо потрібно — можна додати scroll */
 }
 
+.dynamic-attribute {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* відстань між інпутом та селектом */
+    margin-bottom: 5px;
+}
+
+.dynamic-attribute label {
+    min-width: 100px; /* ширина для вирівнювання назви атрибута */
+}
+
+.attrib-input {
+    flex: 1; /* інпут займає весь доступний простір */
+}
+
+.attrib-select {
+    width: 150px; /* ширина селекта */
+}
+
 
 
 .filter_pane {
@@ -268,7 +287,7 @@ textarea {
 
 .addProductModalBack{
 	background:#fff;
-	width:400px;
+	width:452px;
 	margin:10% auto;
 	padding:20px;
 	border-radius:8px;

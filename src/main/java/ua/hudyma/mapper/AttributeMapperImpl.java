@@ -22,7 +22,7 @@ public class AttributeMapperImpl implements AttributeMapper {
     public AttribDto toDto(Attribute attribute) {
         return new AttribDto(
                 attribute.getAttributeName(),
-                null,
+                attribute.getAttributeValue(),
                 attribute.getAttributeType(),
                 null
         );

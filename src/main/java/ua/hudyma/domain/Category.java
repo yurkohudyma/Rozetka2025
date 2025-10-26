@@ -2,6 +2,8 @@ package ua.hudyma.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> productList = new ArrayList<>();
     @ManyToMany(mappedBy = "categoryList")
+    /*@ToString.Exclude
+    @EqualsAndHashCode.Exclude*/
     private List<Attribute> attributesList = new ArrayList<>();
 }
 

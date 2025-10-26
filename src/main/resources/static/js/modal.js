@@ -69,23 +69,64 @@ function getAllCatAttribs(categoryName) {
 function renderAttributes(attributes) {
     const container = document.getElementById('attributesContainer');
     container.innerHTML = ''; // Очистити попереднє
-    console.log(attributes)
 
     attributes.forEach((attr, index) => {
         const wrapper = document.createElement('div');
         wrapper.classList.add('dynamic-attribute');
 
+        // HTML для інпуту та прихованих полів
         wrapper.innerHTML = `
             <label>${attr.attrName}:</label>
-            <input type="text" name="attributeList[${index}].attribValue" value="${attr.attribValue || ''}">
-            <span>${attr.attribUnit ? ' ' + attr.attribUnit : ''}</span>
+            <input type="text" name="attributeList[${index}].attribValue" value="${attr.attribValue || ''}" class="attrib-input">
             <input type="hidden" name="attributeList[${index}].attrName" value="${attr.attrName}">
             <input type="hidden" name="attributeList[${index}].attributeType" value="${attr.attributeType}">
             <input type="hidden" name="attributeList[${index}].attribUnit" value="${attr.attribUnit || ''}">
         `;
 
         container.appendChild(wrapper);
+
+        // Підвантажуємо селект із одиницями атрибута
+        getAllAttribUnits(attr, index);
     });
+}
+
+function getAllAttribUnits(attribute, index) {
+    const wrapper = document.querySelectorAll('.dynamic-attribute')[index];
+    if (!wrapper) return;
+
+    const input = wrapper.querySelector(`input[name="attributeList[${index}].attribValue"]`);
+    const encodedAttribName = encodeURIComponent(attribute.attrName);
+
+    fetch(`/attributes/details?name=${encodedAttribName}`)
+        .then(res => res.json())
+        .then(attr => {
+            // Якщо є одиниці → створюємо селект
+            if (attr.units && attr.units.length > 0) {
+                const select = document.createElement('select');
+                select.classList.add('attrib-select');
+
+                attr.units.forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u;
+                    opt.textContent = u;
+                    select.appendChild(opt);
+                });
+
+                if (!input.value) {
+                    input.value = attr.units[0];
+                }
+
+                select.addEventListener('change', () => {
+                    input.value = select.value;
+                });
+
+                wrapper.appendChild(select);
+            } else {
+                // Якщо одиниць немає → просто беремо attributeValue
+                input.value = attr.attributeValue || '';
+            }
+        })
+        .catch(err => console.error('Помилка при отриманні атрибута:', err));
 }
 
 function addNewAttribute() {
