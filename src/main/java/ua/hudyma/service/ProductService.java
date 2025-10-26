@@ -36,6 +36,22 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final AttributeMapper attributeMapper;
 
+    public void deleteAllCats() {
+        categoryRepository.deleteAll();
+        log.info(":::::::::All cats SUCC deleted");
+    }
+
+    public void deleteAllProducts() {
+        productRepository.deleteAll();
+        log.info("::::::All products SUCC deleted");
+    }
+
+    public void deleteProduct(String productCode) {
+        var product = productRepository.findByProductCode(productCode);
+        product.ifPresent(productRepository::delete);
+        log.info("Product {} has been DELETED", productCode);
+    }
+
 
     //todo products add form
     //todo implem delete product

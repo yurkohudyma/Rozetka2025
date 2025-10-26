@@ -76,5 +76,23 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/products/{productCode}")
+    public String deleteProduct (@PathVariable String productCode){
+        productService.deleteProduct (productCode);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/products")
+    public String deleteAllProducts (){
+        productService.deleteAllProducts ();
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/cats")
+    public String deleteAllCats (){
+        productService.deleteAllCats ();
+        return "redirect:/";
+    }
+
 
 }

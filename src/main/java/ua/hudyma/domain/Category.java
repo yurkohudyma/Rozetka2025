@@ -19,11 +19,9 @@ public class Category {
     @NaturalId
     @Column(unique = true)
     private String categoryName;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> productList = new ArrayList<>();
-    @ManyToMany(mappedBy = "categoryList")
-    /*@ToString.Exclude
-    @EqualsAndHashCode.Exclude*/
+    @ManyToMany(mappedBy = "categoryList", cascade = CascadeType.ALL)
     private List<Attribute> attributesList = new ArrayList<>();
 }
 

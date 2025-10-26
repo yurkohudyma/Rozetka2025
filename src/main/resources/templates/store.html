@@ -109,7 +109,7 @@
                     <label>Назва:</label>
                     <input type="text" name="productName" required><br><br>
                     <label>Ціна:</label>
-                    <input type="number" name="productPrice" step="10" title="[xx.yy]" required
+                    <input type="number" name="productPrice" step="1" title="[xx.yy]" required
                            pattern="\d+[.]?\d*"> ₴<br><br>
 
                     <div id="attributesContainer"></div>
@@ -233,9 +233,14 @@
 
 
         <!--CONTEXT ACTIONS BUTTONS-->
-        <div class="buttons_block" th:if="${!productList.isEmpty()}">
-            <form action="#" th:action="@{/products}" th:method="delete">
-                <input type="submit" value="Видалити все" class="caution_button">
+        <div class="buttons_block" th:unless="${productList.isEmpty()}">
+            <form id="deleteAllProductsForm" action="#" th:action="@{/products}" th:method="delete">
+                <input type="submit" value="Видалити всі Товари" class="caution_button">
+            </form>
+        </div>
+        <div class="buttons_block" th:unless="${catList.isEmpty()}">
+            <form id="deleteAllCatsForm" action="#" th:action="@{/cats}" th:method="delete">
+                <input type="submit" value="Видалити всі Категорії" class="caution_button">
             </form>
         </div>
 

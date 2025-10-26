@@ -3,6 +3,57 @@ document.addEventListener('DOMContentLoaded', function () {
     checkAddNew(select); // одразу тригеримо для вибраної категорії
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('deleteAllCatsForm');
+    form.addEventListener('submit', function(e) {
+        const confirmed = confirm("⚠️ Усі категорії буде видалено безповоротно.\n\nВи впевнені?");
+        if (!confirmed) {
+            e.preventDefault(); // скасовує відправку форми
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('deleteAllProductsForm');
+    form.addEventListener('submit', function(e) {
+        const confirmed = confirm("⚠️ Усі товари буде видалено безповоротно.\n\nВи впевнені?");
+        if (!confirmed) {
+            e.preventDefault(); // скасовує відправку форми
+        }
+    });
+});
+
+
+document.querySelector('#addProductModal form').addEventListener('submit', function (e) {
+    const attrContainer = document.getElementById('attributesContainer');
+    const hasAttributes = attrContainer.querySelectorAll('.dynamic-attribute').length > 0;
+
+    if (!hasAttributes) {
+        e.preventDefault();
+        alert("Додайте хоча б один атрибут перед збереженням товару!");
+    }
+});
+
+document.querySelector('#addProductModal form').addEventListener('submit', (e) => {
+    const select = document.getElementById('category_input');
+    const newCatInput = document.getElementById('newValueInput');
+
+    if (select.value === '__add__') {
+        const newCatName = newCatInput.value.trim();
+        if (!newCatName) {
+            e.preventDefault();
+            alert('Будь ласка, введіть нову категорію або виберіть існуючу.');
+            return;
+        }
+
+        // 👉 Автоматично створюємо і вибираємо нову категорію
+        addNewOption();
+    }
+});
+
+
+
+
 function openAddProductModal() {
     document.getElementById("addProductModal").style.display = "block";
 }
@@ -49,10 +100,14 @@ function addNewOption() {
     // Встановити як вибране
     select.value = value;
 
+    // 👉 Додати цей виклик, щоб оновити DOM
+    checkAddNew(select);
+
     // Сховати блок введення і очистити поле
     document.getElementById("addNewWrapper").style.display = "none";
     input.value = "";
 }
+
 
 function getAllCatAttribs(categoryName) {
     const encodedCategory = encodeURIComponent(categoryName);
@@ -94,13 +149,15 @@ function getAllAttribUnits(attribute, index) {
     const wrapper = document.querySelectorAll('.dynamic-attribute')[index];
     if (!wrapper) return;
 
-    const input = wrapper.querySelector(`input[name="attributeList[${index}].attribValue"]`);
     const encodedAttribName = encodeURIComponent(attribute.attrName);
 
     fetch(`/attributes/details?name=${encodedAttribName}`)
         .then(res => res.json())
         .then(attr => {
-            // Якщо є одиниці → створюємо селект
+            const hiddenUnitInput = wrapper.querySelector(`input[name="attributeList[${index}].attribUnit"]`);
+            const valueInput = wrapper.querySelector(`input[name="attributeList[${index}].attribValue"]`);
+
+            // === Випадок 1: Є одиниці виміру (наприклад, "л", "мл") ===
             if (attr.units && attr.units.length > 0) {
                 const select = document.createElement('select');
                 select.classList.add('attrib-select');
@@ -112,22 +169,58 @@ function getAllAttribUnits(attribute, index) {
                     select.appendChild(opt);
                 });
 
-                if (!input.value) {
-                    input.value = attr.units[0];
+                // Встановити перше значення за замовчуванням
+                if (!hiddenUnitInput.value) {
+                    hiddenUnitInput.value = attr.units[0];
                 }
+                select.value = hiddenUnitInput.value;
 
                 select.addEventListener('change', () => {
-                    input.value = select.value;
+                    hiddenUnitInput.value = select.value;
+                });
+
+                /*// Підпис — одиниця виміру
+                const unitLabel = document.createElement('label');
+                unitLabel.textContent = " Одиниця: ";
+                wrapper.appendChild(unitLabel); */
+                wrapper.appendChild(select);
+            }
+
+            // === Випадок 2: Немає одиниць, але є список можливих значень (наприклад, країни) ===
+            else if (attr.values && attr.values.length > 0) {
+                const select = document.createElement('select');
+                select.classList.add('attrib-select');
+
+                attr.values.forEach(v => {
+                    const opt = document.createElement('option');
+                    opt.value = v;
+                    opt.textContent = v;
+                    select.appendChild(opt);
+                });
+
+                // Встановити значення за замовчуванням
+                if (!valueInput.value) {
+                    valueInput.value = attr.values[0];
+                }
+                select.value = valueInput.value;
+
+                select.addEventListener('change', () => {
+                    valueInput.value = select.value;
                 });
 
                 wrapper.appendChild(select);
-            } else {
-                // Якщо одиниць немає → просто беремо attributeValue
-                input.value = attr.attributeValue || '';
+            }
+
+            // === Випадок 3: Ні одиниць, ні списку — залишаємо текстовий input ===
+            else {
+                // нічого не робимо — input уже є
             }
         })
         .catch(err => console.error('Помилка при отриманні атрибута:', err));
 }
+
+
+
 
 function addNewAttribute() {
     const name = document.getElementById('newAttrName').value.trim();
