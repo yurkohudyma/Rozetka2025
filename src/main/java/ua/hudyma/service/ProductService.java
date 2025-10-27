@@ -1,5 +1,7 @@
 package ua.hudyma.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import ua.hudyma.domain.*;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.MinMaxPricesDto;
@@ -34,7 +36,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final AttributeUnitRepository attributeUnitRepository;
     private final ProductMapper productMapper;
-    private final AttributeMapper attributeMapper;
 
     public void deleteAllCats() {
         categoryRepository.deleteAll();
@@ -52,9 +53,20 @@ public class ProductService {
         log.info("Product {} has been DELETED", productCode);
     }
 
+    @Transactional
+    public void editProduct(String productCode, ProductDto dto) {
+        var product = productRepository
+                .findByProductCode(productCode)
+                .orElseThrow(()
+                        -> new EntityNotFoundException(":::: Product " +  productCode + " not FOUND"));
+        String productName = dto.productName();
+        check(productName);
+        product.setProductName(productName);
+        BigDecimal productPrice = dto.productPrice();
+        check(productPrice);
+        product.setProductPrice(productPrice);
+    }
 
-    //todo products add form
-    //todo implem delete product
     //todo implem edit/update product
     public List<ProductDto> filterByPrice (BigDecimal min, BigDecimal max, String catName){
         if (min == null || max == null){
@@ -204,18 +216,7 @@ public class ProductService {
                 .findAll());
     }
 
-   /* public ProductDto createProductWithAttributes(Product product, String catName, Attribute[] attributes) {
-        var dto = new ProductDto(
-                catName,
-                product.getProductName(),
-                IdGenerator.generateProductCode(catName),
-                product.getProductPrice(),
-                attributeMapper.toDtoList(attributes)
-        );
-        return createProductWithAttributes(dto);
-    }*/
-
-    /**
+     /**
      * Створює новий товар з атрибутами.
      * <p>
      * Якщо категорія або атрибути ще не існують — вони будуть створені.
@@ -302,8 +303,8 @@ public class ProductService {
      * @param fieldName значення для перевірки
      * @throws DtoObligatoryFieldsAreMissingException якщо значення некоректне
      */
-    private void check(String fieldName) {
-        if (fieldName == null || fieldName.trim().isEmpty()) {
+    private void check(Object fieldName) {
+        if (fieldName == null || fieldName.toString().trim().isEmpty()) {
             throw new DtoObligatoryFieldsAreMissingException("Obligatory Dto Field is NULL or MISSING");
         }
     }

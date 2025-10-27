@@ -94,5 +94,12 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @PatchMapping("/edit/{productCode}")
+    public String editProduct (@PathVariable String productCode,
+                               @ModelAttribute ProductDto dto){
+        productService.editProduct (productCode, dto);
+        return "redirect:/";
+    }
+
 
 }

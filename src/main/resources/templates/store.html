@@ -86,7 +86,6 @@
                  <input type="submit" value="Авто" class="button">
              </form>-->
             <button onclick="openAddProductModal()" class="addProductButton">Додати товар</button>
-
         </div>
 
         <!-- ADD PRODUCT MODAL -->
@@ -221,14 +220,35 @@
             <!--PRODUCT MODIFY ACTIONS BUTTONS-->
             <div class="product_solecard_action_buttons_block">
                 <form action="#" th:action="@{'/products/'+${product.productCode}}" th:method="delete">
-                    <button type="submit" class="delete_ico_orderlist">
+                    <button type="submit" class="delete_ico_orderlist" th:data-product-id="${product.productCode}">
                         <img th:src="@{/img/delete-button.png}" th:title="Видалити"/>
                     </button>
                 </form>
-                <a href="edit.html" th:href="@{'/edit/'+${product.productCode}}">
-                    <img class="edit_ico_orderlist" th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
-                </a>
+                <button class="edit_ico_orderlist"
+                        th:data-name="${product.productName}"
+                        th:data-code="${product.productCode}"
+                        th:data-price="${product.productPrice}">
+                    <img th:src="@{/img/edit-button.png}" th:title="Редагувати">
+                </button>
             </div>
+
+
+            <!-- EDIT PRODUCT MODAL -->
+            <div id="editProductModal" class="editProductModal">
+                <div class="editProductModalBack">
+                    <h3 th:text="'Редагувати товар ' + ${product.productCode}"></h3>
+                    <form id="editForm" th:method="patch">
+                        <label>Назва:</label>
+                        <input type="text" name="productName" id="productName"><br><br>
+                        <label>Ціна:</label>
+                        <input type="number" name="productPrice" step="1" id="productPrice"
+                               title="[xx.yy]"> ₴
+                        <button type="submit">Оновити</button>
+                        <button type="button" onclick="closeEditProductModal()">Скасувати</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
 
@@ -240,7 +260,7 @@
         </div>
         <div class="buttons_block" th:unless="${catList.isEmpty()}">
             <form id="deleteAllCatsForm" action="#" th:action="@{/cats}" th:method="delete">
-                <input type="submit" value="Видалити всі Категорії" class="caution_button">
+                <input type="submit" value="Видалити ВСЕ" class="caution_button">
             </form>
         </div>
 
@@ -299,10 +319,13 @@
        window.minPrice = [[${minPrice}]];
        window.maxPrice = [[${maxPrice}]];
 
+
 </script>
+
 <script src="/js/filter.js"></script>
 <script src="/js/priceSlider.js"></script>
 <script src="/js/modal.js"></script>
+<script src="/js/eventListeners.js"></script>
 
 </body>
 </html>

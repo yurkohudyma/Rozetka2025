@@ -274,7 +274,8 @@ textarea {
 	padding:10px;
 }
 
-.addProductModal{
+.addProductModal, 
+.editProductModal{
 	display:none;
 	position:fixed;
 	top:0;
@@ -285,9 +286,18 @@ textarea {
 	z-index:1000;            
 }
 
-.addProductModalBack{
+.addProductModalBack {
 	background:#fff;
 	width:505px;
+	margin:10% auto;
+	padding:20px;
+	border-radius:8px;
+    position:relative;
+}
+
+.editProductModalBack{
+	background:#fff;
+	width:293px;
 	margin:10% auto;
 	padding:20px;
 	border-radius:8px;

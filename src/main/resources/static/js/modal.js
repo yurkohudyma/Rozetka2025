@@ -1,58 +1,12 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const select = document.getElementById('category_input');
-    checkAddNew(select); // одразу тригеримо для вибраної категорії
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('deleteAllCatsForm');
-    form.addEventListener('submit', function(e) {
-        const confirmed = confirm("⚠️ Усі категорії буде видалено безповоротно.\n\nВи впевнені?");
-        if (!confirmed) {
-            e.preventDefault(); // скасовує відправку форми
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('deleteAllProductsForm');
-    form.addEventListener('submit', function(e) {
-        const confirmed = confirm("⚠️ Усі товари буде видалено безповоротно.\n\nВи впевнені?");
-        if (!confirmed) {
-            e.preventDefault(); // скасовує відправку форми
-        }
-    });
-});
 
 
-document.querySelector('#addProductModal form').addEventListener('submit', function (e) {
-    const attrContainer = document.getElementById('attributesContainer');
-    const hasAttributes = attrContainer.querySelectorAll('.dynamic-attribute').length > 0;
+function openEditProductModal() {
+    document.getElementById("editProductModal").style.display = "block";
+}
 
-    if (!hasAttributes) {
-        e.preventDefault();
-        alert("Додайте хоча б один атрибут перед збереженням товару!");
-    }
-});
-
-document.querySelector('#addProductModal form').addEventListener('submit', (e) => {
-    const select = document.getElementById('category_input');
-    const newCatInput = document.getElementById('newValueInput');
-
-    if (select.value === '__add__') {
-        const newCatName = newCatInput.value.trim();
-        if (!newCatName) {
-            e.preventDefault();
-            alert('Будь ласка, введіть нову категорію або виберіть існуючу.');
-            return;
-        }
-
-        // 👉 Автоматично створюємо і вибираємо нову категорію
-        addNewOption();
-    }
-});
-
-
-
+function closeEditProductModal() {
+    document.getElementById("editProductModal").style.display = "none";
+}
 
 function openAddProductModal() {
     document.getElementById("addProductModal").style.display = "block";
