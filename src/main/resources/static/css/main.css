@@ -224,6 +224,21 @@ textarea {
 	margin-top: 10px;	
 }
 
+.lang_button_container{
+}
+
+.lang_button {
+	border-style: none;
+	outline-color: transparent;
+	border-radius: 6px;
+	background-color: #FF8300;
+	color: #fff;
+	cursor: pointer;
+	margin-right: 10px;
+	margin-top: 10px;
+	text-align: center
+}
+
 .select_button{		
 	flex: 1;
     margin: 0 10px;    

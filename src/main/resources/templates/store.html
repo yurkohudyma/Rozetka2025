@@ -15,8 +15,12 @@
 
 
     <title>Розетка2025 ::: Товари</title>
+    <title data-locale="store.title" th:text="#{store.title}"></title>
 </head>
 <body>
+<div class="lang_button_container">
+    <button class="lang_button" data-locale="button.switch" th:text="#{button.switch}"></button>
+</div>
 
 <div class="wrapper">
     <div class="filter_pane" th:if="${showFilterPane}">
@@ -51,7 +55,7 @@
 
     <div id="products_container" class="content_area">
         <header>
-            <h1 class="title">Панель адміна</h1>
+            <h1 class="title" data-locale="admin.panel.title" th:text="#{admin.panel.title}"></h1>
 
             <!-- STATS BLOCK
             <div class="stats_block" >
@@ -74,7 +78,9 @@
         <!--MAIN MENU -->
         <div class="buttons_block">
             <form action="/" method="get">
-                <input type="submit" value="Головна" class="button">
+                <!--<input type="submit" class="button" th:data-locale="admin.mainmenu.home" th:value="#{admin.mainmenu.home}">-->
+                <button type="submit" class="button" th:data-locale="admin.mainmenu.home" th:text="#{admin.mainmenu.home}"></button>
+
             </form>
             <form action="#" th:action="@{/users}" th:method="get">
                 <input type="submit" value="Користувачі" class="button">
@@ -325,6 +331,7 @@
 <script src="/js/filter.js"></script>
 <script src="/js/priceSlider.js"></script>
 <script src="/js/modal.js"></script>
+<script src="/js/locale.js"></script>
 <script src="/js/eventListeners.js"></script>
 
 </body>

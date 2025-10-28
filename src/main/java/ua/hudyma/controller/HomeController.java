@@ -9,13 +9,27 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 @Controller
 @RequiredArgsConstructor
 @Log4j2
 public class HomeController {
     private final ProductService productService;
+
+    @GetMapping("/i18n")
+    @ResponseBody
+    public Map<String, String> getMessages(@RequestParam(defaultValue = "uk") String lang) {
+        Locale locale = Locale.forLanguageTag(lang);
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
+        Map<String, String> messages = new HashMap<>();
+        bundle.keySet().forEach(key -> messages.put(key, bundle.getString(key)));
+        log.info(messages);
+        return messages;
+    }
 
     @GetMapping("/")
     public String index(Model model) {
