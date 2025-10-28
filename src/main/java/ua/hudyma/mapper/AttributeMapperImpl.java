@@ -1,14 +1,20 @@
 package ua.hudyma.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ua.hudyma.domain.Attribute;
 import ua.hudyma.dto.AttribDto;
+import ua.hudyma.dto.AttributeDetailsDto;
+import ua.hudyma.service.AttributeService;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class AttributeMapperImpl implements AttributeMapper {
+
+    private final AttributeService attributeService;
 
     @Override
     public Attribute toEntity(AttribDto dto) {
@@ -41,6 +47,19 @@ public class AttributeMapperImpl implements AttributeMapper {
         return attributes
                 .stream()
                 .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<AttributeDetailsDto> toAttribDetailsDtoList(List<Attribute> attributes) {
+        return attributes
+                .stream()
+                .map(attribute -> new AttributeDetailsDto(
+                        attribute.getAttributeName(),
+                        attribute.getAttributeValue(),
+                        attribute.getAttributeType().name(),
+                        attributeService.getAttribUnits(attribute.getAttributeName())
+                ))
                 .toList();
     }
 }

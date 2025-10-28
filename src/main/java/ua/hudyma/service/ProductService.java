@@ -1,6 +1,5 @@
 package ua.hudyma.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import ua.hudyma.domain.*;
 import ua.hudyma.dto.AttribDto;
@@ -8,7 +7,6 @@ import ua.hudyma.dto.MinMaxPricesDto;
 import ua.hudyma.dto.ProductDto;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
-import ua.hudyma.mapper.AttributeMapper;
 import ua.hudyma.mapper.ProductMapper;
 import ua.hudyma.repository.AttributeRepository;
 import ua.hudyma.repository.AttributeUnitRepository;
@@ -342,7 +340,7 @@ public class ProductService {
                 if (attributeValue == null || attributeValue.isEmpty()){
                     attribOpt.setAttributeValue(attr.attribValue());
                 }
-                if (!attributeUnitRepository.existsByAttribute_IdAndValue(attribOpt.getId(), attr.attribValue())
+                if (!attributeUnitRepository.existsByAttribute_IdAndAttribValue(attribOpt.getId(), attr.attribValue())
                         && !attr.attribUnit().isEmpty()){
                     var newAttribUnit = createAttribUnit(attr, attribOpt);
                     attribOpt.getAttributeUnitList().add(newAttribUnit);
@@ -364,7 +362,7 @@ public class ProductService {
     private static AttributeUnit createAttribUnit( AttribDto attr, Attribute newAttribute) {
         var newAttribUnit = new AttributeUnit();
         newAttribUnit.setAttribute(newAttribute);
-        newAttribUnit.setValue(attr.attribUnit());
+        newAttribUnit.setAttribValue(attr.attribUnit());
         newAttribute.getAttributeUnitList().add(newAttribUnit);
         return newAttribUnit;
     }

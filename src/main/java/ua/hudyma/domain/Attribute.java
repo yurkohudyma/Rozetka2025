@@ -24,6 +24,7 @@ public class Attribute {
     @NaturalId
     @Column(unique = true)
     private String attributeName;
+    @Deprecated
     String attributeValue;
     @Enumerated(EnumType.STRING)
     private AttributeType attributeType;  // STRING, NUMBER, BOOLEAN, SELECT
@@ -40,7 +41,7 @@ public class Attribute {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude //invokes SOF otherwise
+    @EqualsAndHashCode.Exclude //otherwise invokes SOF
     @JsonManagedReference
     private Set<AttributeUnit> attributeUnitList = new HashSet<>();
 }

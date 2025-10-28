@@ -31,9 +31,5 @@ public class ProductRestController {
         return productService.getAttribMapWithDifferentialSorting(catName);
     }
 
-    @GetMapping("/getAllAttribUnits")
-    public ResponseEntity<List<AttributeUnit>> getAllAttribUnits (@RequestParam String attribName){
-        return ResponseEntity.ok(productService
-                .findAllAttribUnitsByName(attribName));
-    }
+
 }

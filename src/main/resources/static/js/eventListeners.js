@@ -1,3 +1,19 @@
+function openEditProductModal() {
+    document.getElementById("editProductModal").style.display = "block";
+}
+
+function closeEditProductModal() {
+    document.getElementById("editProductModal").style.display = "none";
+}
+
+function openAddProductModal() {
+    document.getElementById("addProductModal").style.display = "block";
+}
+
+function closeAddProductModal() {
+    document.getElementById("addProductModal").style.display = "none";
+}
+
 document.querySelectorAll('.edit_ico_orderlist').forEach(btn => {
   btn.addEventListener('click', () => {
     const code = btn.dataset.code;
@@ -17,10 +33,7 @@ document.querySelectorAll('.edit_ico_orderlist').forEach(btn => {
   });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const select = document.getElementById('category_input');
-    checkAddNew(select); // одразу тригеримо для вибраної категорії
-});
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('deleteAllCatsForm');
@@ -58,29 +71,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.querySelector('#addProductModal form').addEventListener('submit', function (e) {
-    const attrContainer = document.getElementById('attributesContainer');
-    const hasAttributes = attrContainer.querySelectorAll('.dynamic-attribute').length > 0;
-
-    if (!hasAttributes) {
-        e.preventDefault();
-        alert("Додайте хоча б один атрибут перед збереженням товару!");
-    }
-});
-
-document.querySelector('#addProductModal form').addEventListener('submit', (e) => {
-    const select = document.getElementById('category_input');
-    const newCatInput = document.getElementById('newValueInput');
-
-    if (select.value === '__add__') {
-        const newCatName = newCatInput.value.trim();
-        if (!newCatName) {
-            e.preventDefault();
-            alert('Будь ласка, введіть нову категорію або виберіть існуючу.');
-            return;
-        }
-
-        // 👉 Автоматично створюємо і вибираємо нову категорію
-        addNewOption();
-    }
-});

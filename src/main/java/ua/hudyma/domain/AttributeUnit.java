@@ -15,5 +15,5 @@ public class AttributeUnit {
     @JoinColumn(name = "attrib_id")
     @JsonBackReference
     private Attribute attribute;
-    private String value;
+    private String attribValue;
 }

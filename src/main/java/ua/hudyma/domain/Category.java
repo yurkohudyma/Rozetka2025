@@ -19,9 +19,12 @@ public class Category {
     @NaturalId
     @Column(unique = true)
     private String categoryName;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Product> productList = new ArrayList<>();
-    @ManyToMany(mappedBy = "categoryList", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "categoryList",
+            cascade = CascadeType.ALL)
     private List<Attribute> attributesList = new ArrayList<>();
 }
 

@@ -9,5 +9,5 @@ public interface AttributeUnitRepository extends JpaRepository<AttributeUnit, Lo
 
     List<AttributeUnit> findAllByAttribute_AttributeName (String attrName);
 
-    boolean existsByAttribute_IdAndValue (Long id, String value);
+    boolean existsByAttribute_IdAndAttribValue(Long id, String value);
 }
