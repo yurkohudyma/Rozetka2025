@@ -1,6 +1,6 @@
 package ua.hudyma.repository;
 
-import ua.hudyma.domain.Category;
+import ua.hudyma.domain.products.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

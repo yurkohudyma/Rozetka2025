@@ -35,10 +35,16 @@ public class HomeController {
     public String index(Model model) {
         var productList = productService.getAllSimple();
         var catList = productService.getAllCats();
+        var productsQuantity = productService.getAllProductsQuantity();
+        var allProductsValue = productService.getAllProductsValue();
         model.addAllAttributes(Map.of(
                 "productList", productList,
                 "showFilterPane", false,
-                "catList", catList));
+                "catList", catList,
+                "ordersQuantity", 0,
+                "productsQuantity", productsQuantity,
+                "usersQuantity", 0,
+                "allProductsValue", allProductsValue));
         return "store";
     }
 

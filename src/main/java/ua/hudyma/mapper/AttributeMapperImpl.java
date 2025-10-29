@@ -2,7 +2,7 @@ package ua.hudyma.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ua.hudyma.domain.Attribute;
+import ua.hudyma.domain.products.Attribute;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.AttributeDetailsDto;
 import ua.hudyma.service.AttributeService;

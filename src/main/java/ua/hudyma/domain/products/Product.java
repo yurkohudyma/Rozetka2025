@@ -1,4 +1,4 @@
-package ua.hudyma.domain;
+package ua.hudyma.domain.products;
 
 import jakarta.persistence.*;
 import lombok.Data;

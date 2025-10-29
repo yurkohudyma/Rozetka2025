@@ -1,6 +1,6 @@
 package ua.hudyma.repository;
 
-import ua.hudyma.domain.Product;
+import ua.hudyma.domain.products.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

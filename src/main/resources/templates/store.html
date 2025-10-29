@@ -57,20 +57,19 @@
         <header>
             <h1 class="title" data-locale="admin.panel.title" th:text="#{admin.panel.title}"></h1>
 
-            <!-- STATS BLOCK
+             <!-- STATS BLOCK -->
             <div class="stats_block" >
                 <div class="stats_unit"><img class="stats_img" th:src="@{/img/order-icon.png}" th:title="Замовлень"/></div>
                 <div class="stats_unit" th:text="${ordersQuantity}"></div>
-                <div class="stats_unit"><img class="stats_img" th:src="@{/img/product-icon.png}" th:title="Авто"/></div>
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/car-icon.png}" th:title="Товарів"/></div>
                 <div class="stats_unit" th:text="${productsQuantity}"></div>
                 <div class="stats_unit"><img class="stats_img" th:src="@{/img/user-icon.png}" th:title="Користувачів"/>
                 </div>
                 <div class="stats_unit" th:text="${usersQuantity}"></div>
-                <div class="stats_unit"><img class="stats_img" th:src="@{/img/green_euro_icon.png}" title="Сума замовлень"/>
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/green_euro_icon.png}" title="Вартість товарів"/>
                 </div>
-                <div class="stats_unit" th:text="'€'+${ordersAmount}"></div>
+                <div class="stats_unit" th:text="'₴ '+${allProductsValue}"></div>
             </div>
-    -->
             <!--version tab-->
             <h4 class="version_block" th:text="'v.' + ${@environment.getProperty('rozetka2025.store.version')}"></h4>
         </header>
@@ -78,17 +77,17 @@
         <!--MAIN MENU -->
         <div class="buttons_block">
             <form action="/" method="get">
-                <button type="submit" class="button" th:data-locale="admin.mainmenu.home" th:text="#{admin.mainmenu.home}"></button>
+                <button type="submit" class="button" th:data-locale="admin.mainmenu.home"
+                        th:text="#{admin.mainmenu.home}"></button>
             </form>
             <form action="#" th:action="@{/users}" th:method="get">
-                <button type="submit" class="button" th:data-locale="admin.mainmenu.users" th:text="#{admin.mainmenu.users}"></button>
+                <button type="submit" class="button" th:data-locale="admin.mainmenu.users"
+                        th:text="#{admin.mainmenu.users}"></button>
             </form>
             <form action="#" th:action="@{/orders}" th:method="get">
-                <button type="submit" class="button" th:data-locale="admin.mainmenu.orders" th:text="#{admin.mainmenu.orders}"></button>
+                <button type="submit" class="button" th:data-locale="admin.mainmenu.orders"
+                        th:text="#{admin.mainmenu.orders}"></button>
             </form>
-            <!-- <form action="#" th:if="${soleProductProductd}" th:action="@{/products}" th:method="get">
-                 <input type="submit" value="Авто" class="button">
-             </form>-->
             <button onclick="openAddProductModal()" class="addProductButton"
                     th:data-locale="admin.mainmenu.addProduct" th:text="#{admin.mainmenu.addProduct}"></button>
         </div>
@@ -140,44 +139,6 @@
             </div>
         </div>
 
-
-        <!--<div class="product_entry_form_block" th:if="${showAddProductForm}">-->
-
-        <!--product ENTRY FORM SECTION
-        <form action="#" th:action="@{/products}" th:method="post">
-            <div class="product_entry_form_level">
-                <label for="model_input">Марка</label>
-                <input id="model_input" name="model" type="text" placeholder="Suzuki Across" required>
-                <label for="description_input" id="description">Опис</label>
-                <input id="description_input" name="description" placeholder="Зручна і якісна" required>
-                <label for="price_input">€</label>
-                <input id="price_input" name="price" type="text" placeholder="10.00" title="[xx.yy]" required
-                       pattern="\d+[.]?\d*">
-            </div>
-
-            <div class="product_entry_form_level">
-                <label for="productclass_input">Клас</label>
-                <select class="select_button" id="productclass_input" name="productClass">
-                    <option th:each="product_class : ${productClassArr}" th:value="${product_class}"
-                            th:text="${product_class.str}"></option>
-                </select>
-                <label for="seatsQuantity_input" id="seatsQuantity">Місць</label>
-                <input id="seatsQuantity_input" name="seatsQuantity" type="text" placeholder="5"
-                       required pattern="\d+">
-                <label for="propulsion_input">Рушій</label>
-                <select class="select_button" id="propulsion_input" name="propulsion">
-                    <option class="pullDownMenu_items" th:each="propulsion : ${productPropulsionArr}" th:value="${propulsion}"
-                            th:text="${propulsion.str}"></option>
-                </select>
-                <label for="totalQty_input">∑<span><sub>заг</sub></span></label>
-                <input id="totalQty_input" name="totalQty" type="text" placeholder="0"
-                       required pattern="\d+">
-                <input type="submit" value="Додати" class="button">
-            </div>
-        </form>
-    </div>
-    -->
-
         <!--PRODUCTS READOUT SECTION-->
         <div class="products_header"></div>
         <table>
@@ -188,39 +149,18 @@
             </tr>
         </table>
 
-        <!--<div class="products_header">
-            <div class="left-side">
-                <span th:text="'Товари (знайдено: ' + ${productList.size()} + ')'"></span>
-            </div>
-            <div class="right-side" th:if="${showFilterResetButton}" style="display: none;" id="resetFiltersContainer">
-                <button id="selected-filters-reset" type="button" class="resetButton">Скинути фільтри</button>
-            </div>
-        </div>-->
         <div class="product" th:each="product : ${productList}">
-            <!--th:class="${product.available == 0} ? product_not_available : product" >-->
-            <!--<div class="product_unit" th:text="'№ '+${product.id}"></div>-->
-            <!--<div class="product_model" th:text="${product.categoryName}"></div>-->
             <div class="product_unit" th:text="'Код товару: ' + ${product.productCode}"></div>
             <b>
                 <div class="product_unit" th:text="${product.productName}"></div>
-            </b> <!--ENUM "${product.productClass.str}"-->
+            </b>
             <div class="product_unit" th:text="'Ціна: ' + ${product.productPrice} + ' ₴'"></div>
-            <div class="product_unit"> <!--th:text="'€ '+${product.price}">--></div>
+            <div class="product_unit"></div>
             </br>
             <div class="product_unit" th:each="attribute : ${product.attributeList}">
                 <td th:text="${attribute.attrName} + ': ' + ${attribute.attribValue} + ' ' + ${attribute.attribUnit}"></td>
                 </tr>
             </div>
-
-
-            <!--<div class="product_unit" th:text="'Місць: '+${product.seatsQuantity}"></div>
-            <div class="product_unit" th:text="${product.propulsion.str}"></div>-->
-            <!--<div class="product_unit">∑<span><sub>пот</sub></span>
-                <span th:text="': ' + ${product.available}"></span>
-            </div>
-            <div class="product_unit">∑<span><sub>заг</sub></span>
-                <span th:text="': ' + ${product.totalQty}"></span>
-            </div>-->
 
             <!--PRODUCT MODIFY ACTIONS BUTTONS-->
             <div class="product_solecard_action_buttons_block">
@@ -253,69 +193,21 @@
                     </form>
                 </div>
             </div>
-
         </div>
-
 
         <!--CONTEXT ACTIONS BUTTONS-->
         <div class="buttons_block" th:unless="${productList.isEmpty()}">
             <form id="deleteAllProductsForm" action="#" th:action="@{/products}" th:method="delete">
-                <button type="submit" class="caution_button" th:data-locale="admin.products.deleteAllProductsButton" th:text="#{admin.products.deleteAllProductsButton}"></button>
+                <button type="submit" class="caution_button" th:data-locale="admin.products.deleteAllProductsButton"
+                        th:text="#{admin.products.deleteAllProductsButton}"></button>
             </form>
         </div>
         <div class="buttons_block" th:unless="${catList.isEmpty()}">
             <form id="deleteAllCatsForm" action="#" th:action="@{/cats}" th:method="delete">
-                <button type="submit" class="caution_button" th:data-locale="admin.products.deleteAllButton" th:text="#{admin.products.deleteAllButton}"></button>
+                <button type="submit" class="caution_button" th:data-locale="admin.products.deleteAllButton"
+                        th:text="#{admin.products.deleteAllButton}"></button>
             </form>
         </div>
-
-        <!--PRODUCTS ORDERS READOUT SECTION
-        <div class="order_header" th:unless="${productOrdersList.isEmpty() and !soleProductProductd}">Замовлення</div>
-        <table class="order_table" th:if="${!productOrdersList.isEmpty() and soleProductProductd}">
-            <thead>
-            <tr class="order_table_legend" >
-                <th>№</th>
-                <th>Користувач</th>
-                <th>Початок</th>
-                <th>Кінець</th>
-                <th>Тривалість</th>
-                <th>Сума</th>
-                <th>Сума GPS</th>
-                <th>Статус</th>
-                <th colspan="2">Дія</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="order" th:each="order : ${productOrdersList}">
-                <td class="order_unit" th:text="${order.id}"></td>
-                <td class="order_unit">
-                    <a href="users.html" th:href="@{'/users/'+${order.user.id}}" th:text="${order.user.name}"></a>
-                </td>
-                <td class="order_unit" th:text="${order.dateBegin}"></td>
-                <td class="order_unit" th:text="${order.dateEnd}"></td>
-                <td class="order_unit" th:text="${order.duration}+' діб'"></td>
-                <td class="order_unit" th:text="'€'+${order.amount}"></td>
-                <td class="order_unit" th:text="'€'+${order.auxPayment}"></td>
-                <td class="order_unit" th:text="${order.status.str}"></td>
-                <td class="buttons_order_unit">
-                    <form action="#" th:action="@{'/orders/'+${order.id}}" th:method="delete">
-                        <button type="submit" class="delete_ico_orderlist">
-                            <img th:src="@{/img/delete-button.png}" th:title="Видалити"/>
-                        </button>
-                    </form>
-                </td>
-                <td class="buttons_order_unit">
-                    <a href="edit.html" th:href="@{'/edit/'+${order.id}+'/order'}">
-                        <img th:src="@{/img/edit-button.png}" th:title="Редагувати"/>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class = "productDeleteErrorBlock" th:if="${showErrorProductUsedInOrder}">
-            <span>Неможливо видалити авто з чинного замовлення, видаліть або відредагуйте замовлення з цим авто</span>
-        </div>-->
-
     </div>
 </div>
 
@@ -323,7 +215,6 @@
        window.cat = [[${cat}]];
        window.minPrice = [[${minPrice}]];
        window.maxPrice = [[${maxPrice}]];
-
 
 </script>
 

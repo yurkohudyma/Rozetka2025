@@ -1,7 +1,7 @@
 package ua.hudyma.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import ua.hudyma.domain.*;
+import ua.hudyma.domain.products.*;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.MinMaxPricesDto;
 import ua.hudyma.dto.ProductDto;
@@ -78,6 +78,19 @@ public class ProductService {
     public List<AttributeUnit> findAllAttribUnitsByName(String attribName) {
         return attributeUnitRepository
                 .findAllByAttribute_AttributeName(attribName);
+    }
+
+    public Integer getAllProductsQuantity() {
+        return productRepository.findAll().size();
+    }
+
+    public BigDecimal getAllProductsValue() {
+        return productRepository
+                .findAll()
+                .stream()
+                .map(Product::getProductPrice)
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
     }
 
     @Transactional(readOnly = true)

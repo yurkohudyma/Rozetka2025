@@ -1,7 +1,7 @@
 package ua.hudyma.mapper;
 
 import org.springframework.stereotype.Component;
-import ua.hudyma.domain.Product;
+import ua.hudyma.domain.products.Product;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.ProductDto;
 

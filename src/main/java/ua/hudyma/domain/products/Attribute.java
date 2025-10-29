@@ -1,4 +1,4 @@
-package ua.hudyma.domain;
+package ua.hudyma.domain.products;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

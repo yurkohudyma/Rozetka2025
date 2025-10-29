@@ -1,9 +1,7 @@
-package ua.hudyma.domain;
+package ua.hudyma.domain.products;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.ArrayList;

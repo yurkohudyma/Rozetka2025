@@ -2,9 +2,8 @@ package ua.hudyma.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ua.hudyma.domain.Attribute;
+import ua.hudyma.domain.products.Attribute;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.hudyma.domain.AttributeUnit;
 
 import java.util.List;
 import java.util.Optional;

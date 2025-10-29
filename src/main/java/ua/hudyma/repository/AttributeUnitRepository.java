@@ -1,7 +1,7 @@
 package ua.hudyma.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.hudyma.domain.AttributeUnit;
+import ua.hudyma.domain.products.AttributeUnit;
 
 import java.util.List;
 
