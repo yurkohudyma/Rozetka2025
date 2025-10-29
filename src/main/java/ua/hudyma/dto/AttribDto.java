@@ -1,6 +1,6 @@
 package ua.hudyma.dto;
 
-import ua.hudyma.domain.AttributeType;
+import ua.hudyma.enums.AttributeType;
 
 public record AttribDto(
         String attrName,

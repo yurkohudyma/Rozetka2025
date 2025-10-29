@@ -5,6 +5,7 @@ import ua.hudyma.domain.*;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.MinMaxPricesDto;
 import ua.hudyma.dto.ProductDto;
+import ua.hudyma.enums.AttributeType;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
 import ua.hudyma.mapper.ProductMapper;

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
+import ua.hudyma.enums.AttributeType;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -231,11 +231,12 @@ textarea {
 	border-style: none;
 	outline-color: transparent;
 	border-radius: 6px;
-	background-color: #FF8300;
+	background-color: #009aff;
 	color: #fff;
 	cursor: pointer;
 	margin-right: 10px;
 	margin-top: 10px;
+	margin-left: 10px;
 	text-align: center
 }
 

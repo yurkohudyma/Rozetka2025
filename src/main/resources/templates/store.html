@@ -25,7 +25,7 @@
 <div class="wrapper">
     <div class="filter_pane" th:if="${showFilterPane}">
         <div class="price_filter_block">
-            <strong>Ціна</strong>
+            <strong data-locale="store.filters.price" th:text="#{store.filters.price}"></strong>
             <div id="price-slider" th:attr="data-min=${minPrice}, data-max=${maxPrice}"></div>
             <div class="price-values">
                 <span id="min-price" th:text="${minPrice}"></span>
@@ -78,20 +78,19 @@
         <!--MAIN MENU -->
         <div class="buttons_block">
             <form action="/" method="get">
-                <!--<input type="submit" class="button" th:data-locale="admin.mainmenu.home" th:value="#{admin.mainmenu.home}">-->
                 <button type="submit" class="button" th:data-locale="admin.mainmenu.home" th:text="#{admin.mainmenu.home}"></button>
-
             </form>
             <form action="#" th:action="@{/users}" th:method="get">
-                <input type="submit" value="Користувачі" class="button">
+                <button type="submit" class="button" th:data-locale="admin.mainmenu.users" th:text="#{admin.mainmenu.users}"></button>
             </form>
             <form action="#" th:action="@{/orders}" th:method="get">
-                <input type="submit" value="Замовлення" class="button">
+                <button type="submit" class="button" th:data-locale="admin.mainmenu.orders" th:text="#{admin.mainmenu.orders}"></button>
             </form>
             <!-- <form action="#" th:if="${soleProductProductd}" th:action="@{/products}" th:method="get">
                  <input type="submit" value="Авто" class="button">
              </form>-->
-            <button onclick="openAddProductModal()" class="addProductButton">Додати товар</button>
+            <button onclick="openAddProductModal()" class="addProductButton"
+                    th:data-locale="admin.mainmenu.addProduct" th:text="#{admin.mainmenu.addProduct}"></button>
         </div>
 
         <!-- ADD PRODUCT MODAL -->
@@ -261,12 +260,12 @@
         <!--CONTEXT ACTIONS BUTTONS-->
         <div class="buttons_block" th:unless="${productList.isEmpty()}">
             <form id="deleteAllProductsForm" action="#" th:action="@{/products}" th:method="delete">
-                <input type="submit" value="Видалити всі Товари" class="caution_button">
+                <button type="submit" class="caution_button" th:data-locale="admin.products.deleteAllProductsButton" th:text="#{admin.products.deleteAllProductsButton}"></button>
             </form>
         </div>
         <div class="buttons_block" th:unless="${catList.isEmpty()}">
             <form id="deleteAllCatsForm" action="#" th:action="@{/cats}" th:method="delete">
-                <input type="submit" value="Видалити ВСЕ" class="caution_button">
+                <button type="submit" class="caution_button" th:data-locale="admin.products.deleteAllButton" th:text="#{admin.products.deleteAllButton}"></button>
             </form>
         </div>
 
