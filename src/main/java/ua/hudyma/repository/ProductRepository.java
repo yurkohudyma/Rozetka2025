@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     List<Product> findByProductPriceBetween(BigDecimal min, BigDecimal max);
+
+    Optional<Product> findByVendorCode(String vendorCode);
 }

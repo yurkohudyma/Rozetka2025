@@ -3,6 +3,7 @@ package ua.hudyma.domain.products;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
+import ua.hudyma.util.IdGenerator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import ua.hudyma.service.UserService;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 @Log4j2
 public class HomeController {
     private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping("/i18n")
     @ResponseBody

@@ -23,7 +23,7 @@ public class Order {
     private String orderCode = UUID.randomUUID().toString();
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    private String buyerCode; //todo implement entity
+    private String buyerCode;
     private BigDecimal orderTotal;
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json", name = "product_dto_list")

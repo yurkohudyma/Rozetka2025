@@ -1,3 +1,34 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // Шукаємо всі елементи, які мають клас .product_unit_vendor
+  const vendorBlocks = document.querySelectorAll(".product_unit_vendor");
+
+  vendorBlocks.forEach(block => {
+    const vendorCode = block.dataset.vendorId; // беремо data-vendor-id
+
+    if (!vendorCode) {
+      console.warn("⚠️ Відсутній data-vendor-id у елементі:", block);
+      return;
+    }
+
+    // Звертаємося до твого бекенд ендпойнта
+    fetch(`/api/getVendorName?vendorCode=${vendorCode}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Помилка завантаження: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(vendor => {
+        // Очікується, що бекенд повертає JSON з полем name
+        block.textContent += ' ' + vendor.name;
+      })
+      .catch(error => {
+        console.error("Помилка при отриманні вендора:", error);
+        block.textContent = "Невідомо";
+      });
+  });
+});
+
 function openEditProductModal() {
     document.getElementById("editProductModal").style.display = "block";
 }

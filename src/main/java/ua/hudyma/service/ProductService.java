@@ -9,10 +9,7 @@ import ua.hudyma.enums.AttributeType;
 import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
 import ua.hudyma.mapper.ProductMapper;
-import ua.hudyma.repository.AttributeRepository;
-import ua.hudyma.repository.AttributeUnitRepository;
-import ua.hudyma.repository.CategoryRepository;
-import ua.hudyma.repository.ProductRepository;
+import ua.hudyma.repository.*;
 import ua.hudyma.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -35,6 +32,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final AttributeUnitRepository attributeUnitRepository;
     private final ProductMapper productMapper;
+    private final VendorRepository vendorRepository;
 
     public void deleteAllCats() {
         categoryRepository.deleteAll();
@@ -66,7 +64,6 @@ public class ProductService {
         product.setProductPrice(productPrice);
     }
 
-    //todo implem edit/update product
     public List<ProductDto> filterByPrice (BigDecimal min, BigDecimal max, String catName){
         if (min == null || max == null){
             return mapListToDto(productRepository.findAllByCategory_CategoryName(catName));
@@ -153,6 +150,11 @@ public class ProductService {
                 .max(BigDecimal::compareTo)
                 .orElse(BigDecimal.ZERO);
         return new MinMaxPricesDto(maxPrice, minPrice);
+    }
+
+    public String getVendorNameByCode(String vendorCode) {
+        return vendorRepository.findByVendorCode(vendorCode).orElseThrow(
+                () -> new EntityNotFoundException("Vendor " + vendorCode + " NOT FOUND")).getVendorName();
     }
 
     private List<ProductDto> mapListToDto(List<Product> filteredProducts) {
@@ -260,6 +262,9 @@ public class ProductService {
         product.setCategory(category);
         product.setProductCode(IdGenerator.generateProductCode(categoryName));
         product.setProductPrice(dto.productPrice());
+        var vendorCode = dto.vendorCode();
+        check(vendorCode);
+        product.setVendorCode(vendorCode);
         productRepository.save(product);
         var attributesList = extractAttributesListFromDtoAndSaveNew(
                 dtoAttributesList, category);
@@ -315,7 +320,7 @@ public class ProductService {
      * @param fieldName значення для перевірки
      * @throws DtoObligatoryFieldsAreMissingException якщо значення некоректне
      */
-    private void check(Object fieldName) {
+    private static void check(Object fieldName) {
         if (fieldName == null || fieldName.toString().trim().isEmpty()) {
             throw new DtoObligatoryFieldsAreMissingException("Obligatory Dto Field is NULL or MISSING");
         }
