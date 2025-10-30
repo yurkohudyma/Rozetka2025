@@ -23,11 +23,10 @@ public class Order {
     private String orderCode = UUID.randomUUID().toString();
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    private String buyerId; //todo implement entity
-    private String vendorId; //todo implement entity
+    private String buyerCode; //todo implement entity
     private BigDecimal orderTotal;
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "json", name = "product_dto_list")
     private List<OrderProductDto> productDTOList = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime orderCreatedOn;

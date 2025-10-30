@@ -3,10 +3,7 @@ package ua.hudyma.restcontroller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.hudyma.domain.orders.OrderProductDto;
 import ua.hudyma.domain.orders.OrderRespDto;
 import ua.hudyma.service.OrderService;
@@ -20,8 +17,21 @@ import java.util.List;
 public class OrderRestController {
     private final OrderService orderService;
 
-    @PostMapping("/add") public ResponseEntity<OrderRespDto> createOrder (
-            @RequestBody List<OrderProductDto> dto){
-        return ResponseEntity.ok(orderService.createOrder (dto));
+    @PostMapping("/add")
+    public ResponseEntity<OrderRespDto> createOrder (
+            @RequestBody List<OrderProductDto> dto,
+            @RequestParam String buyerCode){
+        return ResponseEntity.ok(orderService.createOrder (dto, buyerCode));
+    }
+
+    @GetMapping("/{orderCode}")
+    public ResponseEntity<OrderRespDto> getOrder (@PathVariable String orderCode){
+        return ResponseEntity.ok(orderService.getOrder (orderCode));
+    }
+
+    @PatchMapping("/updateBuyer")
+    public ResponseEntity<OrderRespDto> updateOrderBuyer (
+            @RequestParam String buyerCode, @RequestParam String orderCode){
+        return ResponseEntity.ok(orderService.updateOrderBuyer (buyerCode, orderCode));
     }
 }

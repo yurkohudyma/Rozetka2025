@@ -20,6 +20,7 @@ public class Product {
     private String productCode;
     @Column(unique = true)
     private String productName;
+    private String vendorCode;
     @ManyToOne
     private Category category;
     @OneToMany(mappedBy = "product",

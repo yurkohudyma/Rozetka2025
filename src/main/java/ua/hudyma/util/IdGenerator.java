@@ -56,6 +56,14 @@ public class IdGenerator {
                 .toString();
     }
 
+    public static String generateVendorCode() {
+        return "VE" + generateRandomDigits(10);
+    }
+
+    public static String generateBuyerCode() {
+        return "BU" + generateRandomDigits(10);
+    }
+
     public static <T extends Enum<T>> T getRandomEnum(Class<T> enumClass) {
         T[] values = enumClass.getEnumConstants();
         int index = secureRandom.nextInt(values.length);
