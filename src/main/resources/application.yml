@@ -1,3 +1,6 @@
+uploadConfig: S:/TOOLS/.Hudyma_projects/Rozetka2025/src/main/resources/static/img/products
+basePathConfig: S:/TOOLS/.Hudyma_projects/Rozetka2025/src/main/resources/static
+
 rozetka2025:
   store:
     version: 0.0.4

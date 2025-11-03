@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Звертаємося до твого бекенд ендпойнта
+    // Звертаємося до ендпойнта
     fetch(`/api/getVendorName?vendorCode=${vendorCode}`)
       .then(response => {
         if (!response.ok) {
@@ -45,6 +45,7 @@ function closeAddProductModal() {
     document.getElementById("addProductModal").style.display = "none";
 }
 
+/*//process edit-modal
 document.querySelectorAll('.edit_ico_orderlist').forEach(btn => {
   btn.addEventListener('click', () => {
     const code = btn.dataset.code;
@@ -62,7 +63,31 @@ document.querySelectorAll('.edit_ico_orderlist').forEach(btn => {
     // Відкриваємо модальне
     openEditProductModal();
   });
+});*/
+
+// process edit-modal
+document.querySelectorAll('.edit_ico_orderlist').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.dataset.code;
+    const name = btn.dataset.name;
+    const price = btn.dataset.price;
+
+    // Заповнюємо форму
+    document.querySelector('#productName').value = name;
+    document.querySelector('#productPrice').value = price;
+
+    // Оновлюємо action
+    const form = document.querySelector('#editForm');
+    form.action = `/edit/${code}`;
+
+    // Очищаємо попередні прев’ю та файли
+    resetUploadZone();
+
+    // Відкриваємо модальне
+    openEditProductModal();
+  });
 });
+
 
 
 

@@ -57,16 +57,18 @@
         <header>
             <h1 class="title" data-locale="admin.panel.title" th:text="#{admin.panel.title}"></h1>
 
-             <!-- STATS BLOCK -->
-            <div class="stats_block" >
-                <div class="stats_unit"><img class="stats_img" th:src="@{/img/order-icon.png}" th:title="Замовлень"/></div>
+            <!-- STATS BLOCK -->
+            <div class="stats_block">
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/order-icon.png}" th:title="Замовлень"/>
+                </div>
                 <div class="stats_unit" th:text="${ordersQuantity}"></div>
                 <div class="stats_unit"><img class="stats_img" th:src="@{/img/car-icon.png}" th:title="Товарів"/></div>
                 <div class="stats_unit" th:text="${productsQuantity}"></div>
                 <div class="stats_unit"><img class="stats_img" th:src="@{/img/user-icon.png}" th:title="Користувачів"/>
                 </div>
                 <div class="stats_unit" th:text="${usersQuantity}"></div>
-                <div class="stats_unit"><img class="stats_img" th:src="@{/img/green_euro_icon.png}" title="Вартість товарів"/>
+                <div class="stats_unit"><img class="stats_img" th:src="@{/img/green_euro_icon.png}"
+                                             title="Вартість товарів"/>
                 </div>
                 <div class="stats_unit" th:text="'₴ '+${allProductsValue}"></div>
             </div>
@@ -155,7 +157,7 @@
                 <div class="product_unit" th:text="${product.productName}"></div>
             </b>
             <div class="product_unit" th:text="'Ціна: ' + ${product.productPrice} + ' ₴'"></div>
-            <div class="product_unit"></div>
+            <div class="product_unit"><img th:src="${product.imageUrl}" alt="Постер фільму"/></div>
             </br>
             <div class="product_unit" th:each="attribute : ${product.attributeList}">
                 <td th:text="${attribute.attrName} + ': ' + ${attribute.attribValue} + ' ' + ${attribute.attribUnit}"></td>
@@ -180,7 +182,7 @@
             </div>
 
 
-            <!-- EDIT PRODUCT MODAL -->
+            <!-- EDIT PRODUCT MODAL
             <div id="editProductModal" class="editProductModal">
                 <div class="editProductModalBack">
                     <h3 th:text="'Редагувати товар ' + ${product.productCode}"></h3>
@@ -190,11 +192,35 @@
                         <label>Ціна:</label>
                         <input type="number" name="productPrice" step="1" id="productPrice"
                                title="[xx.yy]"> ₴
+                        <div id="drop-zone">Перетягни сюди фото або встав (Ctrl+V)</div>
+                        <img id="preview" src="" alt="Попередній перегляд" hidden>
+                        <br>
+                        <button id="upload-btn" disabled>Завантажити</button>
                         <button type="submit">Оновити</button>
                         <button type="button" onclick="closeEditProductModal()">Скасувати</button>
                     </form>
                 </div>
+            </div>-->
+
+            <!-- EDIT PRODUCT MODAL -->
+            <div id="editProductModal" class="editProductModal">
+                <div class="editProductModalBack">
+                    <h3 th:text="'Редагувати товар ' + ${product.productCode}"></h3>
+                    <form id="editForm" th:method="post" enctype="multipart/form-data">
+                        <label>Назва:</label>
+                        <input type="text" name="productName" id="productName"><br><br>
+                        <label>Ціна:</label>
+                        <input type="number" name="productPrice" step="1" id="productPrice" title="[xx.yy]"> ₴
+                        <div id="drop-zone">Перетягни сюди фото або встав (Ctrl+V)</div>
+                        <div id="preview-container"></div>
+                        <br>
+                        <button id="upload-btn" type="submit">Оновити</button>
+                        <button type="button" onclick="closeEditProductModal()">Скасувати</button>
+                    </form>
+                </div>
             </div>
+
+
         </div>
 
         <!--CONTEXT ACTIONS BUTTONS-->
@@ -218,6 +244,7 @@
        window.minPrice = [[${minPrice}]];
        window.maxPrice = [[${maxPrice}]];
 
+
 </script>
 
 <script src="/js/filter.js"></script>
@@ -225,6 +252,7 @@
 <script src="/js/modal.js"></script>
 <script src="/js/locale.js"></script>
 <script src="/js/eventListeners.js"></script>
+<script src="/js/upload_image.js"></script>
 
 </body>
 </html>

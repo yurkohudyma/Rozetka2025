@@ -9,6 +9,7 @@ public record ProductDto(
         String productCode,
         BigDecimal productPrice,
         String vendorCode,
+        String imageUrl,
         List<AttribDto> attributeList
         ) {
 }

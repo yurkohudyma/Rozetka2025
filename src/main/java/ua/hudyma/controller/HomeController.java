@@ -1,6 +1,8 @@
 package ua.hudyma.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.hudyma.dto.FilterReqDto;
 import ua.hudyma.dto.ProductDto;
 import ua.hudyma.service.ProductService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import ua.hudyma.service.UserService;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -116,10 +119,12 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @PatchMapping("/edit/{productCode}")
+    @PostMapping(value = "/edit/{productCode}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String editProduct (@PathVariable String productCode,
-                               @ModelAttribute ProductDto dto){
-        productService.editProduct (productCode, dto);
+                               @ModelAttribute ProductDto dto,
+                               @RequestParam MultipartFile[] files) {
+        productService.editProduct (productCode, dto, files);
         return "redirect:/";
     }
 

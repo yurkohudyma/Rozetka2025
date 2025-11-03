@@ -1,6 +1,8 @@
 package ua.hudyma.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
 import ua.hudyma.domain.products.*;
 import ua.hudyma.dto.AttribDto;
 import ua.hudyma.dto.MinMaxPricesDto;
@@ -10,13 +12,20 @@ import ua.hudyma.exception.DtoObligatoryFieldsAreMissingException;
 import ua.hudyma.exception.ProductAlreadyExistsException;
 import ua.hudyma.mapper.ProductMapper;
 import ua.hudyma.repository.*;
+import ua.hudyma.util.FileUtils;
 import ua.hudyma.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,6 +36,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class ProductService {
+
+    @Value("${uploadConfig}")
+    private String uploadConfig;
+    @Value("${basePathConfig}")
+    private String basePathConfig;
     private final AttributeRepository attributeRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
@@ -51,7 +65,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void editProduct(String productCode, ProductDto dto) {
+    public void editProduct(String productCode, ProductDto dto, MultipartFile[] files) {
         var product = productRepository
                 .findByProductCode(productCode)
                 .orElseThrow(()
@@ -62,7 +76,47 @@ public class ProductService {
         BigDecimal productPrice = dto.productPrice();
         check(productPrice);
         product.setProductPrice(productPrice);
+        if (files.length > 0){
+            Arrays.stream(files)
+                    .forEach(file -> {
+                try {
+                    uploadImage(file);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            product.setImageUrl(FileUtils.buildRelativeUrl(
+                    Paths.get(basePathConfig), Path.of(uploadConfig))
+                    + "/" + files[0].getOriginalFilename());
+        }
+        //todo multiple images url not persisted to DB, only first
+
     }
+
+    private void uploadImage(MultipartFile file) throws IOException {
+        String filename = file.getOriginalFilename();
+        Path targetPath = Path.of(uploadConfig).resolve(filename).normalize();
+        Files.copy(file.getInputStream(), targetPath,
+                StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    /*public void uploadImage(MultipartFile[] files, String productName) {
+        Arrays.stream(files).forEach(image -> {
+            try {
+                Files.createDirectories(Paths.get(uploadConfig));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String filename = productName + "_" + image.getOriginalFilename();
+            Path filePath = Paths.get(uploadConfig + filename);
+            try {
+                Files.copy(image.getInputStream(), filePath,
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }*/
 
     public List<ProductDto> filterByPrice (BigDecimal min, BigDecimal max, String catName){
         if (min == null || max == null){
@@ -162,7 +216,6 @@ public class ProductService {
                 .map(productMapper::toDto)
                 .toList();
     }
-
     @Transactional(readOnly = true)
     public List<ProductDto> getAllCategoryProducts(String catName) {
         return mapListToDto(productRepository

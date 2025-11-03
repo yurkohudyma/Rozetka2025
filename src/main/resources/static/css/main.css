@@ -41,6 +41,71 @@ html, body {
     width: 150px; /* ширина селекта */
 }
 
+#drop-zone {
+      width: 210px;
+      height: 200px;
+      border: 2px dashed #888;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      cursor: pointer;
+      margin: 30px;
+      text-align: center;
+    }
+    #drop-zone.dragover {
+      border-color: #007bff;
+      color: #007bff;
+      background: #f0f8ff;
+    }
+    #preview {
+      margin-top: 10px;
+      max-width: 300px;
+    }
+	
+	#preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.preview-item {
+  position: relative;
+  display: inline-block;
+}
+
+.preview-thumb {
+  max-width: 80px;
+  max-height: 80px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 0, 0, 0.8);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 0;
+}
+
+.remove-btn:hover {
+  background: red;
+}
+
+
+
 
 
 .filter_pane {

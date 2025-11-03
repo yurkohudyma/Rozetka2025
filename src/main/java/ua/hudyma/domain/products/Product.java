@@ -30,4 +30,6 @@ public class Product {
             )
     private List<ProductProperty> productPropertiesList = new ArrayList<>();
     private BigDecimal productPrice;
+    private String imageUrl;
+    //todo multiple images url not persisted to DB, only first
 }
